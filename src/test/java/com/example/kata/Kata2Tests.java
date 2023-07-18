@@ -1,5 +1,7 @@
 package com.example.kata;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -31,23 +33,23 @@ class Kata2Tests {
 
   @Test
   void call_addWithEmptyString_returnInteger0() {
-    Assertions.assertEquals(0, kata2.add(""));
+    assertEquals(0, kata2.add(""));
   }
 
   @Test
   void call_addWithStringValue1_returnInteger1() {
-    Assertions.assertEquals(1, kata2.add("1"));
+    assertEquals(1, kata2.add("1"));
   }
 
   @Test
   void call_addWithStringValue1comma2_returnInteger12() {
-    Assertions.assertEquals(3, kata2.add("1,2"));
+    assertEquals(3, kata2.add("1,2"));
   }
 
   //2. Allow the add method to handle an unknown number of arguments
   @Test
   void call_addWithUnknownNumberOfArguments_returnSumOfArguments(){
-    Assertions.assertEquals(13, kata2.add("1,2,3", "3,4", ""));
+    assertEquals(13, kata2.add("1,2,3", "3,4", ""));
   }
 
   //3. Allow the add method to handle newlines as separators, instead of comas
@@ -57,7 +59,18 @@ class Kata2Tests {
 
   @Test
   void call_addWithArgumentsSeperatedWithNewlines_returnSumOfArguments(){
-    Assertions.assertEquals(6, kata2.add("1,2\n3"));
+    assertEquals(6, kata2.add("1,2\n3"));
+  }
+
+  //4. Add validation to not to allow a separator at the end
+  //
+  //For example “1,2,” should return an error (or throw an exception)
+
+  @Test
+  void call_addWithArgumentsEndingWithComma_throwsException() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      kata2.add("1,2,");
+    });
   }
 
 }
