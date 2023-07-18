@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 //do not forget to refactor your code after each passing test
 //write your assertions relating to the exact requirements
 
-public class Kata1Tests {
+class Kata1Tests {
 
   private static Kata1 kata1;
   @BeforeAll
@@ -29,7 +29,7 @@ public class Kata1Tests {
     assertEquals("1966", kata1.convertIntegerToString(1966));
   }
 
-  //2. For multiples of three return “Fizz” instead of the number"
+  //2. For multiples of three return “Fizz” instead of the number
   @Test
   void call_convertIntegerToStringWithMultiplesOfThree_returnFizz() {
     assertEquals("Fizz", kata1.convertIntegerToString(369));
@@ -40,5 +40,12 @@ public class Kata1Tests {
   void call_convertIntegerToStringWithMultiplesOfFive_returnBuzz() {
     assertEquals("Buzz", kata1.convertIntegerToString(625));
   }
+
+  //4. For numbers that are multiples of both three and five return “FizzBuzz”.
+  @Test
+  void call_convertIntegerToStringWithMultiplesOfThreeAndMultiplesOfFive_returnFizzBuzz() {
+    assertEquals("FizzBuzz", kata1.convertIntegerToString(15));
+  }
+
 
 }
