@@ -41,6 +41,6 @@ class Kata2Tests {
 
   @Test
   void call_addWithStringValue1comma2_returnInteger12() {
-    Assertions.assertEquals(12, kata2.add("1,2"));
+    Assertions.assertEquals(3, kata2.add("1,2"));
   }
 }

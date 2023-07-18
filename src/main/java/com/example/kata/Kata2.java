@@ -1,17 +1,15 @@
 package com.example.kata;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public record Kata2() {
 
   public Integer add(String numbers) {
-    if(numbers.isEmpty()) {
-      return 0;
-    }
-    String [] splittedString = numbers.split(",");
-    if (splittedString.length < 2) {
-      return Integer.valueOf(splittedString[0]);
-    } else {
-      return Integer.valueOf(splittedString[0] + splittedString[1]);
-    }
+    return Optional.ofNullable(Arrays.stream(numbers.split(","))
+        .mapToInt(stringNumber -> Integer.valueOf(stringNumber))
+            .sum())
+        .orElse(0);
   }
 
 }
