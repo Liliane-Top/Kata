@@ -45,10 +45,19 @@ class Kata2Tests {
   }
 
   //2. Allow the add method to handle an unknown number of arguments
-
   @Test
   void call_addWithUnknownNumberOfArguments_returnSumOfArguments(){
     Assertions.assertEquals(13, kata2.add("1,2,3", "3,4", ""));
+  }
+
+  //3. Allow the add method to handle newlines as separators, instead of comas
+  //
+  //“1,2\n3” should return “6”
+  //“2,\n3” is invalid, but no need to clarify it with the program
+
+  @Test
+  void call_addWithArgumentsSeperatedWithNewlines_returnSumOfArguments(){
+    Assertions.assertEquals(6, kata2.add("1,2\n3"));
   }
 
 }
