@@ -2,6 +2,7 @@ package com.example.kata;
 
 import java.util.Arrays;
 import java.util.Optional;
+
 import java.util.stream.Stream;
 
 public record Kata2() {
@@ -13,16 +14,5 @@ public record Kata2() {
                 .mapToInt(Integer::valueOf))
             .sum())
         .orElse(0);
-
-
   }
 }
-//    return Arrays.stream(numbers).flatMap(stringNumber -> stringNumber.split(","))
-//        Arrays.stream(numbers.split(","))
-//            .filter(stream -> !stream.isEmpty())
-//            .mapToInt(Integer::valueOf)
-//            .sum())
-//        .orElse(0);
-//  }
-
-//}

@@ -50,4 +50,5 @@ class Kata2Tests {
   void call_addWithUnknownNumberOfArguments_returnSumOfArguments(){
     Assertions.assertEquals(13, kata2.add("1,2,3", "3,4", ""));
   }
+
 }
