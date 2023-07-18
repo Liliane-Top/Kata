@@ -38,4 +38,9 @@ class Kata2Tests {
   void call_addWithStringValue1_returnInteger1() {
     Assertions.assertEquals(1, kata2.add("1"));
   }
+
+  @Test
+  void call_addWithStringValue1comma2_returnInteger12() {
+    Assertions.assertEquals(12, kata2.add("1,2"));
+  }
 }
