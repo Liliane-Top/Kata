@@ -5,9 +5,10 @@ import java.util.Optional;
 
 public record Kata2() {
 
-  public Integer add(String numbers) {
-    return Optional.ofNullable(Arrays.stream(numbers.split(","))
-        .mapToInt(stringNumber -> Integer.valueOf(stringNumber))
+  public int add(String numbers) {
+    return Optional.of(Arrays.stream(numbers.split(","))
+            .filter(stream -> !stream.isEmpty())
+            .mapToInt(Integer::valueOf)
             .sum())
         .orElse(0);
   }
