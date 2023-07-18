@@ -43,4 +43,12 @@ class Kata2Tests {
   void call_addWithStringValue1comma2_returnInteger12() {
     Assertions.assertEquals(3, kata2.add("1,2"));
   }
+
+  //2. Allow the add method to handle an unknown number of arguments
+
+  @Test
+  void call_addWithUnknownNumberOfArguments_returnSumOfArguments(){
+    Assertions.assertEquals(13, kata2.add("1,2,3", "3,4", ""));
+  }
+
 }

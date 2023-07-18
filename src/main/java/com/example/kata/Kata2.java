@@ -3,13 +3,16 @@ package com.example.kata;
 import java.util.Arrays;
 import java.util.Optional;
 
+import java.util.stream.Stream;
+
 public record Kata2() {
 
-  public Integer add(String numbers) {
-    return Optional.ofNullable(Arrays.stream(numbers.split(","))
-        .mapToInt(stringNumber -> Integer.valueOf(stringNumber))
+  public int add(String... numbers) {
+    return Optional.of(Stream.of(numbers)
+            .filter(stream -> !stream.isEmpty())
+            .flatMapToInt(stringNumber -> Arrays.stream(stringNumber.split(","))
+                .mapToInt(Integer::valueOf))
             .sum())
         .orElse(0);
   }
-
 }
