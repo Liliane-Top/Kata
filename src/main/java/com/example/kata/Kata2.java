@@ -6,6 +6,10 @@ public record Kata2() {
     if(numbers.isEmpty()) {
       return 0;
     }
+    String [] splittedString = numbers.split(",");
+    if (splittedString.length < 2) {
+      return Integer.valueOf(splittedString[0]);
+    }
     return null;
   }
 

@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 //start with the simplest case (empty string) and extend it with the more advanced cases (“1” and “1,2”) step by step
 //keep the three rules in mind and always write just sufficient enough code
 //do not forget to refactor your code after each passing test
-public class Kata2Tests {
+class Kata2Tests {
 
   private static Kata2 kata2;
 
@@ -34,4 +34,8 @@ public class Kata2Tests {
     Assertions.assertEquals(0, kata2.add(""));
   }
 
+  @Test
+  void call_addWithStringValue1_returnInteger1() {
+    Assertions.assertEquals(1, kata2.add("1"));
+  }
 }
