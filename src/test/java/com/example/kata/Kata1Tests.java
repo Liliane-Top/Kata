@@ -1,6 +1,7 @@
 package com.example.kata;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -18,15 +19,18 @@ import org.junit.jupiter.api.Test;
 class Kata1Tests {
 
   private static Kata1 kata1;
+
   @BeforeAll
   static void setUp() {
     kata1 = new Kata1(null, null);
   }
 
-//1. Write a “fizzBuzz” method that accepts a number as input and returns it as a String.
+  //1. Write a “fizzBuzz” method that accepts a number as input and returns it as a String.
   @Test
   void call_convertIntegerToStringWithNumber_returnAsString() {
     assertEquals("1966", kata1.convertIntegerToString(1966));
+    assertEquals("-44", kata1.convertIntegerToString(-44));
+    assertNotEquals("45", kata1.convertIntegerToString(45));
   }
 
   //2. For multiples of three return “Fizz” instead of the number
@@ -46,6 +50,5 @@ class Kata1Tests {
   void call_convertIntegerToStringWithMultiplesOfThreeAndMultiplesOfFive_returnFizzBuzz() {
     assertEquals("FizzBuzz", kata1.convertIntegerToString(15));
   }
-
 
 }
