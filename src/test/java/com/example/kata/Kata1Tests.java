@@ -1,5 +1,7 @@
 package com.example.kata;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -15,8 +17,16 @@ public class Kata1Tests {
 
   @Test
   void call_convertIntegerToStringWithNumber_returnAsString(){
-    Kata1 kata1 = new Kata1(null, null);
-    Assertions.assertEquals("1966", kata1.convertIntegerToString(1966));
+    var kata1 = new Kata1(null, null);
+    assertEquals("1966", kata1.convertIntegerToString(1966));
+  }
+
+  //For multiples of three return “Fizz” instead of the number"
+
+  @Test
+  void call_convertIntegerToStringWithMultiplesOfThree_returnFizz(){
+    var kata1 = new Kata1(null, null);
+    assertEquals("Fizz", kata1.convertIntegerToString(369));
   }
 
 }
