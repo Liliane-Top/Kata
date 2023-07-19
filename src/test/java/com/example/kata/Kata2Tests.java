@@ -73,4 +73,20 @@ class Kata2Tests {
     });
   }
 
+  //5. Allow the add method to handle different delimiters
+  //
+  //To change the delimiter, the beginning of the input will contain a separate line
+  // that looks like this:
+  ////[delimiter]\n[numbers]
+  //“//;\n1;3” should return “4”
+  //“//|\n1|2|3” should return “6”
+  //“//sep\n2sep5” should return “7”
+  //“//|\n1|2,3” is invalid and should return an error (or throw an exception)
+  // with the message “‘|’ expected but ‘,’ found at position 3.”
+
+  @Test
+  void call_addWithDifferentDelimiters_returnSumOfArgument() {
+    assertEquals(4, kata2.add("//;\n1;3"));
+  }
+
 }
