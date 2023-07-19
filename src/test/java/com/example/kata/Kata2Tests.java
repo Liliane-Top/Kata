@@ -81,8 +81,7 @@ class Kata2Tests {
   //“//;\n1;3” should return “4”
   //“//|\n1|2|3” should return “6”
   //“//sep\n2sep5” should return “7”
-  //“//|\n1|2,3” is invalid and should return an error (or throw an exception)
-  // with the message “‘|’ expected but ‘,’ found at position 3.”
+
 
   @Test
   void call_addWithDifferentDelimiters_returnSumOfArgument() {
@@ -92,10 +91,23 @@ class Kata2Tests {
     assertEquals(7, kata2.add("//sep\n2sep5"));
   }
 
+
   @Test
   void call_addWithDifferentDelimitersAndInvalidString_throwsException() {
     assertThrows(NumberFormatException.class, () -> {
       kata2.add("//|\n1|2,3");
     });
+  }
+
+
+  //“//|\n1|2,3” is invalid and should return an error (or throw an exception)
+  // with the message “‘|’ expected but ‘,’ found at position 3.”
+  @Test
+  void call_addWithDifferentDelimitersAndInvalidString_throwsException_returnsCorrectMessage() {
+    try {
+      kata2.add("//|\n1|2,3");
+    } catch (NumberFormatException e){
+      assertEquals("expected '|' but found ',' found at position 3", e.getMessage());
+    }
   }
 }
