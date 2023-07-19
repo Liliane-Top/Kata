@@ -48,7 +48,7 @@ class Kata2Tests {
 
   //2. Allow the add method to handle an unknown number of arguments
   @Test
-  void call_addWithUnknownNumberOfArguments_returnSumOfArguments(){
+  void call_addWithUnknownNumberOfArguments_returnSumOfArguments() {
     assertEquals(13, kata2.add("1,2,3", "3,4", ""));
   }
 
@@ -58,7 +58,7 @@ class Kata2Tests {
   //“2,\n3” is invalid, but no need to clarify it with the program
 
   @Test
-  void call_addWithArgumentsSeperatedWithNewlines_returnSumOfArguments(){
+  void call_addWithArgumentsSeperatedWithNewlines_returnSumOfArguments() {
     assertEquals(6, kata2.add("1,2\n3"));
   }
 
@@ -67,7 +67,7 @@ class Kata2Tests {
   //For example “1,2,” should return an error (or throw an exception)
 
   @Test
-  void call_addWithArgumentsEndingWithComma_throwsException() {
+  void call_addWithArgumentsEndingWithDelimiter_throwsException() {
     assertThrows(IllegalArgumentException.class, () -> {
       kata2.add("1,2,");
     });
@@ -87,8 +87,15 @@ class Kata2Tests {
   @Test
   void call_addWithDifferentDelimiters_returnSumOfArgument() {
     assertEquals(4, kata2.add("//;\n1;3"));
+    assertEquals(9, kata2.add("//;\n1;3;5"));
     assertEquals(6, kata2.add("//|\n1|2|3"));
     assertEquals(7, kata2.add("//sep\n2sep5"));
   }
 
+  @Test
+  void call_addWithDifferentDelimitersAndInvalidString_throwsException() {
+    assertThrows(NumberFormatException.class, () -> {
+      kata2.add("//|\n1|2,3");
+    });
+  }
 }
