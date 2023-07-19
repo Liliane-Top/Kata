@@ -1,24 +1,58 @@
 package com.example.kata;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.StringUtils;
 
-public record Kata2() {
+public class Kata2 {
+
+  private static int count;
+  private static String delimiter = ",";
+
+
 
   public int add(String... numbers) throws IllegalArgumentException {
-
     return Optional.of(Stream.of(numbers)
             .filter(stream -> !stream.isEmpty())
-            .flatMap(checkIfValueEndsWithComma())
+            .flatMap(checkIfValueEndsWithDelimiter())
+            .flatMap(checkIfDifferentDelimiterIsUsed())
+            .filter(s -> !s.isEmpty())
+            .flatMap(checkIfValueIsANumber())
             .flatMapToInt(getSeparatedNumbers())
             .sum())
         .orElse(0);
   }
 
-  private static Function<String, Stream<String>> checkIfValueEndsWithComma() {
+  private static Function<String, Stream<String>>  checkIfValueIsANumber() {
+    return stringNumber -> {
+      ++count;
+      if (StringUtils.isNumeric(stringNumber)) {
+        return Stream.of(stringNumber);
+      } else {
+        throw new NumberFormatException("expected '" + delimiter +
+            "' but found '" + stringNumber + "' found at position " + count);
+      }
+    };
+
+  }
+
+  private static Function<String, Stream<String>> checkIfDifferentDelimiterIsUsed() {
+    return stringNumber -> {
+      if (stringNumber.startsWith("//")) {
+        String[] splittedString = stringNumber.split("\n");
+        delimiter = splittedString[0].replace("//", "");
+        return Stream.of(splittedString[1].split(delimiter))
+            .map(s -> s.replace(delimiter, ""));
+      } else {
+        return Stream.of(stringNumber.split(" *[,\n] *"));
+      }
+    };
+  }
+
+
+  private static Function<String, Stream<String>> checkIfValueEndsWithDelimiter() {
     return stringNumber -> {
       if (stringNumber.endsWith(",")) {
         throw new IllegalArgumentException();
@@ -29,7 +63,7 @@ public record Kata2() {
   }
 
   private static Function<String, IntStream> getSeparatedNumbers() {
-    return stringNumber -> Arrays.stream(stringNumber.split(" *[,\n] *"))
+    return stringNumber -> Stream.of(stringNumber)
         .mapToInt(Integer::valueOf);
   }
 }
