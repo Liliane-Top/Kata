@@ -1,9 +1,6 @@
 package com.example.kata;
 
-import lombok.Builder;
-
-@Builder
-public record Kata1(Integer number, String numberAsString) {
+public record Kata1() {
 
   public String convertIntegerToString(Integer number) {
     if (number % 3 == 0 && number % 5 == 0) {

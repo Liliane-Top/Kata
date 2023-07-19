@@ -4,8 +4,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import lombok.Value;
 import org.apache.commons.lang3.StringUtils;
-
 public class Kata2 {
 
   private static int index;

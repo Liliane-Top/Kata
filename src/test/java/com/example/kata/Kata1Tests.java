@@ -22,7 +22,7 @@ class Kata1Tests {
 
   @BeforeAll
   static void setUp() {
-    kata1 = new Kata1(null, null);
+    kata1 = new Kata1();
   }
 
   //1. Write a “fizzBuzz” method that accepts a number as input and returns it as a String.
