@@ -24,12 +24,11 @@ import org.junit.jupiter.api.Test;
 //do not forget to refactor your code after each passing test
 class Kata2Tests {
 
-  private static Kata2 kata2;
+  private Kata2 kata2;
 
   @BeforeEach
   void setUp() {
     kata2 = new Kata2();
-    Kata2.delimiter = ",";
   }
 
 
@@ -94,7 +93,7 @@ class Kata2Tests {
 
   @Test
   void call_addWithDifferentDelimitersAndInvalidString_throwsException() {
-    assertThrows(NumberFormatException.class, () -> kata2.add("//|\n1|2,3"));
+    assertThrows(IllegalArgumentException.class, () -> kata2.add("//|\n1|2,3"));
   }
 
 
@@ -104,8 +103,26 @@ class Kata2Tests {
   void call_addWithDifferentDelimitersAndInvalidString_throwsException_returnsCorrectMessage() {
     try {
       kata2.add("//|\n1|2,3");
-    } catch (NumberFormatException e) {
+    } catch (IllegalArgumentException e) {
       assertEquals("expected '|' but found ',' found at position 3", e.getMessage());
+    }
+  }
+
+  //6. Calling add with negative numbers will return the message “Negative number(s) not allowed: <negativeNumbers>”
+  //
+  //“1,-2” is invalid and should return the message “Negative number(s) not allowed: -2”
+  //“2,-4,-9” is invalid and should return the message “Negative number(s) not allowed: -4, -9”
+  @Test
+  void call_addWithNegativeNumbers_throwsException() {
+    assertThrows(IllegalArgumentException.class, () -> kata2.add("//|\n1|2,3"));
+  }
+
+  @Test
+  void call_addWithNegativeNumbers_throwsException_returnsCorrectMessage() {
+    try {
+      kata2.add("1,-2");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Negative number(s) not allowed: -2", e.getMessage());
     }
   }
 }
