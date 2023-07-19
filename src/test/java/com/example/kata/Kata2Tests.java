@@ -1,9 +1,9 @@
 package com.example.kata;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 //Kata 2 – String calculator
@@ -26,10 +26,12 @@ class Kata2Tests {
 
   private static Kata2 kata2;
 
-  @BeforeAll
-  static void setUp() {
+  @BeforeEach
+  void setUp() {
     kata2 = new Kata2();
+    Kata2.delimiter = ",";
   }
+
 
   @Test
   void call_addWithEmptyString_returnInteger0() {
@@ -68,9 +70,7 @@ class Kata2Tests {
 
   @Test
   void call_addWithArgumentsEndingWithDelimiter_throwsException() {
-    assertThrows(IllegalArgumentException.class, () -> {
-      kata2.add("1,2,");
-    });
+    assertThrows(IllegalArgumentException.class, () -> kata2.add("1,2,"));
   }
 
   //5. Allow the add method to handle different delimiters
@@ -94,9 +94,7 @@ class Kata2Tests {
 
   @Test
   void call_addWithDifferentDelimitersAndInvalidString_throwsException() {
-    assertThrows(NumberFormatException.class, () -> {
-      kata2.add("//|\n1|2,3");
-    });
+    assertThrows(NumberFormatException.class, () -> kata2.add("//|\n1|2,3"));
   }
 
 
@@ -106,7 +104,7 @@ class Kata2Tests {
   void call_addWithDifferentDelimitersAndInvalidString_throwsException_returnsCorrectMessage() {
     try {
       kata2.add("//|\n1|2,3");
-    } catch (NumberFormatException e){
+    } catch (NumberFormatException e) {
       assertEquals("expected '|' but found ',' found at position 3", e.getMessage());
     }
   }
