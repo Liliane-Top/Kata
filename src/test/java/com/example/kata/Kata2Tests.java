@@ -104,7 +104,7 @@ class Kata2Tests {
     try {
       kata2.add("//|\n1|2,3");
     } catch (IllegalArgumentException e) {
-      assertEquals("expected '|' but found ',' found at position 3", e.getMessage());
+      assertEquals("'|' expected but ',' found at position 3", e.getMessage());
     }
   }
 
@@ -125,4 +125,18 @@ class Kata2Tests {
       assertEquals("Negative number(s) not allowed: -2", e.getMessage());
     }
   }
+
+  //7. Calling add with multiple errors will return all error messages separated by newlines.
+  // “//|\n1|2,-3” is invalid and return the message “Negative number(s) not allowed: -3\n’|’
+  // expected but ‘,’ found at position 3.”
+
+//  @Test
+//  void call_addWithMultipleErrors_showAllMessagesOnSeperateLines() {
+//    try {
+//      kata2.add("//|\n1|2,-3");
+//      } catch(IllegalArgumentException e){
+//      assertEquals("Negative number(s) not allowed: -3\n '|' expected but ‘,’ found at position 3", e.getMessage());
+//
+//    }
+//  }
 }
