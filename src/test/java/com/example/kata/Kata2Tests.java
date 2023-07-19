@@ -87,6 +87,8 @@ class Kata2Tests {
   @Test
   void call_addWithDifferentDelimiters_returnSumOfArgument() {
     assertEquals(4, kata2.add("//;\n1;3"));
+    assertEquals(6, kata2.add("//|\n1|2|3"));
+    assertEquals(7, kata2.add("//sep\n2sep5"));
   }
 
 }

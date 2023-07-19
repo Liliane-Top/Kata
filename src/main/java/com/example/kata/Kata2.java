@@ -11,12 +11,11 @@ import java.util.stream.Stream;
 public record Kata2() {
 
   public int add(String... numbers) throws IllegalArgumentException {
-
     return Optional.of(Stream.of(numbers)
             .filter(stream -> !stream.isEmpty())
+            .flatMap(checkIfValueEndsWithComma())
             .flatMap(checkIfDifferentDelimiterIsUsed())
                 .filter( s -> !s.isEmpty())
-            .flatMap(checkIfValueEndsWithComma())
             .flatMapToInt(getSeparatedNumbers())
             .sum())
         .orElse(0);
@@ -27,7 +26,7 @@ public record Kata2() {
       if (stringNumber.startsWith("//")) {
         String[] splittedString = stringNumber.split("\n");
         String delimiter = splittedString[0].replace("//", "");
-       return Stream.of(stringNumber.split(delimiter))
+       return Stream.of(splittedString[1].split(delimiter))
             .map(s -> s.replaceAll("[^\\d.]", ""));
       } else {
       return Stream.of(stringNumber);
