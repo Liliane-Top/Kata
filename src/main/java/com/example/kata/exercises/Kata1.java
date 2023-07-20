@@ -1,4 +1,4 @@
-package com.example.kata;
+package com.example.kata.exercises;
 
 public record Kata1() {
 

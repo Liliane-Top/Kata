@@ -3,6 +3,7 @@ package com.example.kata;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.example.kata.exercises.Kata2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -130,13 +131,13 @@ class Kata2Tests {
   // “//|\n1|2,-3” is invalid and return the message “Negative number(s) not allowed: -3\n’|’
   // expected but ‘,’ found at position 3.”
 
-//  @Test
-//  void call_addWithMultipleErrors_showAllMessagesOnSeperateLines() {
-//    try {
-//      kata2.add("//|\n1|2,-3");
-//      } catch(IllegalArgumentException e){
-//      assertEquals("Negative number(s) not allowed: -3\n '|' expected but ‘,’ found at position 3", e.getMessage());
-//
-//    }
-//  }
+  @Test
+  void call_addWithMultipleErrors_showAllMessagesOnSeperateLines() {
+    try {
+      kata2.add("//|\n1|2,-3");
+      } catch(IllegalArgumentException e){
+      assertEquals("Negative number(s) not allowed: -3\n '|' expected but ‘,’ found at position 3", e.getMessage());
+
+    }
+  }
 }

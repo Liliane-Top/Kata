@@ -1,16 +1,18 @@
-package com.example.kata;
+package com.example.kata.exercises;
 
+import com.example.kata.exceptions.AggregateException;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Kata2 {
-
   private int index = 0;
   private String delimiter = ",";
 
-  public int add(String... numbers) throws IllegalArgumentException {
+  private AggregateException aggregateException = new AggregateException();
+
+  public int add(String... numbers) {
     return Optional.of(Stream.of(numbers)
             .filter(stream -> !stream.isEmpty())
             .flatMap(checkIfValueEndsWithDelimiter())
@@ -26,7 +28,13 @@ public class Kata2 {
   private Function<String, Stream<String>> checkIfValueEndsWithDelimiter() {
     return stringNumber -> {
       if (stringNumber.endsWith(delimiter)) {
-        throw new IllegalArgumentException();
+        aggregateException.addException(
+            new IllegalArgumentException("Input can't end with delimiter"));
+        try {
+          throw aggregateException;
+        } catch (AggregateException e) {
+          throw new IllegalArgumentException(e);
+        }
       } else {
         return Stream.of(stringNumber);
       }
@@ -41,16 +49,20 @@ public class Kata2 {
         Integer result = Integer.parseInt(stringNumber);
         checkIfNumberIsPositive(result);
         return Stream.of(stringNumber);
-      } catch (NumberFormatException e) {
-        throw new IllegalArgumentException("expected '" + delimiter +
-            "' but found '" + stringNumber + "' found at position " + index);
+      } catch (IllegalArgumentException e) {
+        aggregateException.addException(new IllegalArgumentException("expected '" + delimiter +
+            "' but found '" + stringNumber + "' found at position " + index));
+        return null;
+//        throw new IllegalArgumentException("expected '" + delimiter +
+//            "' but found '" + stringNumber + "' found at position " + index);
       }
     };
   }
 
-  private void checkIfNumberIsPositive(Integer stringNumber) {
+  private void checkIfNumberIsPositive(Integer stringNumber)  {
     if (stringNumber < 0) {
-      throw new IllegalArgumentException("Negative number(s) not allowed: " + stringNumber);
+      aggregateException.addException(new IllegalArgumentException("Negative number(s) not allowed: " + stringNumber));
+     // throw new IllegalArgumentException("Negative number(s) not allowed: " + stringNumber);
     }
   }
 
