@@ -2,8 +2,10 @@ package com.example.kata.exceptions;
 
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class InvalidPasswordException extends Exception {
 
   private String message;

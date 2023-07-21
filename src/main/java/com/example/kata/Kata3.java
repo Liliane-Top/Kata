@@ -1,13 +1,14 @@
 package com.example.kata;
 
-import static java.lang.Character.isUpperCase;
-
 import com.example.kata.exceptions.InvalidPasswordException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
+@Getter
 public class Kata3 {
+
   private List<Integer> errorcode = new ArrayList<>();
 
   public boolean validatePassword(String password) throws InvalidPasswordException {
