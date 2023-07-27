@@ -37,8 +37,11 @@ public class Kata2WithYasharTests {
         Arguments.of("435", 435),
         Arguments.of("435,5", 440),
         Arguments.of("435,5,6", 446),
-        Arguments.of("1,2\n3", 6));
+        Arguments.of("1,2\n3", 6),
+        Arguments.of("//;\\n1;3", 4));
   }
+
+
 
   @ParameterizedTest
   @MethodSource("incorrectCases")
@@ -50,16 +53,8 @@ public class Kata2WithYasharTests {
 
   public static Stream<Arguments> incorrectCases() {
     return Stream.of(
-        Arguments.of("1,2,", "Input can't end with comma"));
+        Arguments.of("1,2,", "Input can't end with comma"),
+        Arguments.of("1,2,\n", "Input can't end with non-digit"));
   }
-
-  //1. The method can take up to two numbers, separated by commas, and will return their sum as a result. So the inputs can be: “”, “1”, “1,2”. For an empty string, it will return 0.
-  //
-  //Notes:
-  //
-  //start with the simplest case (empty string) and extend it with the more advanced cases (“1” and “1,2”) step by step
-  //keep the three rules in mind and always write just sufficient enough code
-  //do not forget to refactor your code after each passing test
-
 
 }
