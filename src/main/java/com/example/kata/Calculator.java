@@ -2,11 +2,15 @@ package com.example.kata;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
+
 public class Calculator {
 
     public Integer add(String input) {
         if (StringUtils.isNumeric(input))
             return Integer.parseInt(input);
-        return input.length();
+        if (input.isEmpty())
+            return 0;
+        return Arrays.stream(input.split(",")).mapToInt(Integer::parseInt).sum();
     }
 }
