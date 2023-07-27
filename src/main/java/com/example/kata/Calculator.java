@@ -28,13 +28,7 @@ public class Calculator {
     }
 
     private static IntStream tokenize(List<String> delim, String numbers) {
-        delim.stream().reduce()
-        delim.stream().reduce(List.of(numbers),
-                (List<String> nums, String del) ->
-                        nums.stream().flatMap(str -> Arrays.stream(str.split(del)).toList()).toList()
-        );
-        Stream.of(numbers).map(numbers.split(delim.get(1)))
-        return Arrays.stream(numbers.split(delim)).mapToInt(Integer::parseInt);
+        return Arrays.stream(numbers.replaceAll(delim.toString(), " ").split(" ")).mapToInt(Integer::parseInt);
     }
 
     private Pair<List<String>, String> parse(String input) {
