@@ -30,19 +30,20 @@ public class Calculator {
     return tokenize(delim, numbers).sum();
   }
 
-  private static IntStream tokenize(List<String> delim, String numbers) {
+  private IntStream tokenize(List<String> delim, String numbers) {
     AtomicInteger index = new AtomicInteger(1);
     return Arrays.stream(numbers.split(delim.toString()))
         .filter(s -> !s.isEmpty())
-        .flatMap(str -> checkIfOnlyNumbers(delim, index, str))
+        .flatMap(str -> checkIfOnlyPositiveNumbers(delim, index, str))
         .mapToInt(Integer::parseInt);
   }
 
-  private static Stream<String> checkIfOnlyNumbers(List<String> delim, AtomicInteger index,
+  private Stream<String> checkIfOnlyPositiveNumbers(List<String> delim, AtomicInteger index,
       String str) {
     try {
       index.getAndIncrement();
-      Integer.parseInt(str);
+      Integer number = Integer.parseInt(str);
+      checkIfNumberIsPositive(number);
       return Stream.of(str);
     } catch (NumberFormatException exception) {
       String invalid = Arrays.stream(str.split("")).filter(s -> !StringUtils.isNumeric(s))
@@ -51,6 +52,11 @@ public class Calculator {
           "'" + delim.get(0) + "' expected but '" + invalid + "' found at position " + index);
     }
   }
+  private void checkIfNumberIsPositive(Integer stringNumber) {
+      if (stringNumber < 0) {
+        throw new IllegalArgumentException("Negative number(s) not allowed: " + stringNumber);
+      }
+    }
 
   private Pair<List<String>, String> parse(String input) {
     List<String> delim = List.of(",", "\n");
