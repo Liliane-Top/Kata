@@ -2,7 +2,6 @@ package com.example.kata;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.example.kata.exceptions.InvalidPasswordException;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,11 +10,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class Kata2WithYasharTests {
 
-  private Kata3WithYashar kata3;
+  private Calculator kata3;
 
   @BeforeEach
   void setUp() {
-    kata3 = new Kata3WithYashar();
+    kata3 = new Calculator();
   }
 
 
