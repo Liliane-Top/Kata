@@ -5,14 +5,17 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Calculator {
 
     public Integer add(String input) throws Exception {
 
-        Pair<String, String> parsed = parse(input);
+        Pair<List<String>, String> parsed = parse(input);
 
-        String delim = parsed.getLeft();
+        List<String> delim = parsed.getLeft();
         String numbers = parsed.getRight();
 
         if (StringUtils.isNumeric(numbers))
@@ -21,14 +24,23 @@ public class Calculator {
             return 0;
         if (numbers.matches(".*[^0-9]"))
             throw new Exception();
-        return Arrays.stream(numbers.split(delim)).mapToInt(Integer::parseInt).sum();
+        return tokenize(delim, numbers).sum();
     }
 
-    private Pair<String, String> parse(String input) {
-        String delim = "[,\\n]";
-        if (input.startsWith("//"))
-        {
-            delim = input.substring(2).split("\n")[0];
+    private static IntStream tokenize(List<String> delim, String numbers) {
+        delim.stream().reduce()
+        delim.stream().reduce(List.of(numbers),
+                (List<String> nums, String del) ->
+                        nums.stream().flatMap(str -> Arrays.stream(str.split(del)).toList()).toList()
+        );
+        Stream.of(numbers).map(numbers.split(delim.get(1)))
+        return Arrays.stream(numbers.split(delim)).mapToInt(Integer::parseInt);
+    }
+
+    private Pair<List<String>, String> parse(String input) {
+        List<String> delim = List.of(",", "\n");
+        if (input.startsWith("//")) {
+            delim = List.of(input.substring(2).split("\n")[0]);
             input = input.substring(2).split("\n")[1];
         }
         return Pair.of(delim, input);
