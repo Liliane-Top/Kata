@@ -20,14 +20,15 @@ public class Kata2WithYasharTests {
 
   @ParameterizedTest
   @MethodSource("correctCases")
-  void call_validatePassword(String input, Integer output)  {
+  void call_validatePassword(String input, Integer output) {
     assertEquals(output, kata3.add(input));
 
   }
 
   public static Stream<Arguments> correctCases() {
     return Stream.of(
-        Arguments.of("", 0 ));
+        Arguments.of("", 0),
+        Arguments.of("1", 1));
   }
 
   //1. The method can take up to two numbers, separated by commas, and will return their sum as a result. So the inputs can be: “”, “1”, “1,2”. For an empty string, it will return 0.
@@ -37,7 +38,6 @@ public class Kata2WithYasharTests {
   //start with the simplest case (empty string) and extend it with the more advanced cases (“1” and “1,2”) step by step
   //keep the three rules in mind and always write just sufficient enough code
   //do not forget to refactor your code after each passing test
-
 
 
 }
