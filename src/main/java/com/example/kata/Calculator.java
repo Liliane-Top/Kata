@@ -11,6 +11,6 @@ public class Calculator {
             return Integer.parseInt(input);
         if (input.isEmpty())
             return 0;
-        return Arrays.stream(input.split(",")).mapToInt(Integer::parseInt).sum();
+        return Arrays.stream(input.split("[,\\n]")).mapToInt(Integer::parseInt).sum();
     }
 }
