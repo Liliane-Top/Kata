@@ -3,9 +3,7 @@ package com.example.kata;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.example.kata.exceptions.InvalidPasswordException;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -40,9 +38,9 @@ public class Kata2WithYasharTests {
         Arguments.of("1,2\n3", 6),
         Arguments.of("//;\n1;3", 4),
         Arguments.of("//;\n2;3", 5),
-        Arguments.of("//|\n1|2|3", 6));
+        Arguments.of("//|\n1|2|3", 6),
+        Arguments.of("//sep\n2sep5", 7));
   }
-
 
 
   @ParameterizedTest
