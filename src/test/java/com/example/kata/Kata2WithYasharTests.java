@@ -1,8 +1,11 @@
 package com.example.kata;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.example.kata.exceptions.InvalidPasswordException;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -35,6 +38,19 @@ public class Kata2WithYasharTests {
         Arguments.of("435,5", 440),
         Arguments.of("435,5,6", 446),
         Arguments.of("1,2\n3", 6));
+  }
+
+  @ParameterizedTest
+  @MethodSource("incorrectCases")
+  void call_validatePassword(String input, String message) {
+    Exception exception = assertThrows(InvalidPasswordException.class,
+        () -> kata3.add(input));
+
+  }
+
+  public static Stream<Arguments> incorrectCases() {
+    return Stream.of(
+        Arguments.of("1,2,", "Input can't end with comma"));
   }
 
   //1. The method can take up to two numbers, separated by commas, and will return their sum as a result. So the inputs can be: “”, “1”, “1,2”. For an empty string, it will return 0.
