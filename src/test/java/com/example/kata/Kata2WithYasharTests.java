@@ -30,7 +30,8 @@ public class Kata2WithYasharTests {
         Arguments.of("", 0),
         Arguments.of("1", 1),
         Arguments.of("1,2", 3),
-        Arguments.of("2", 2));
+        Arguments.of("2", 2),
+        Arguments.of("435", 435));
   }
 
   //1. The method can take up to two numbers, separated by commas, and will return their sum as a result. So the inputs can be: “”, “1”, “1,2”. For an empty string, it will return 0.
