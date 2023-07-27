@@ -22,7 +22,7 @@ public class Calculator {
       return 0;
     }
     if (numbers.matches(".*[^0-9]")) {
-      throw new Exception();
+      throw new Exception("Input can't end with '" + input.charAt(input.length()-1) + "'");
     }
     return tokenize(delim, numbers).sum();
   }

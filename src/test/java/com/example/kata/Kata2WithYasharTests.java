@@ -21,7 +21,7 @@ public class Kata2WithYasharTests {
 
   @ParameterizedTest
   @MethodSource("correctCases")
-  void call_validatePassword(String input, Integer output) throws Exception {
+  void call_add(String input, Integer output) throws Exception {
     assertEquals(output, kata3.add(input));
 
   }
@@ -45,16 +45,19 @@ public class Kata2WithYasharTests {
 
   @ParameterizedTest
   @MethodSource("incorrectCases")
-  void call_validatePassword(String input, String message) {
+  void call_add(String input, String message) {
     Exception exception = assertThrows(Exception.class,
         () -> kata3.add(input));
+
+    assertEquals(message, exception.getMessage());
 
   }
 
   public static Stream<Arguments> incorrectCases() {
     return Stream.of(
-        Arguments.of("1,2,", "Input can't end with comma"),
-        Arguments.of("1,2,\n", "Input can't end with non-digit"));
+        Arguments.of("1,2,", "Input can't end with ','"),
+        Arguments.of("1,2,\n", "Input can't end with '\n'"),
+        Arguments.of("//|\n1|2,3", "‘|’ expected but ‘,’ found at position 3."));
   }
 
 }
