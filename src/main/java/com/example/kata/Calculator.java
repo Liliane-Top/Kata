@@ -24,8 +24,8 @@ public class Calculator {
       return 0;
     }
     if (numbers.matches(".*\\D")) {
-      throw new IllegalArgumentException(
-          "Input can't end with '" + input.charAt(input.length() - 1) + "'");
+      throw new IllegalArgumentException(String.format
+          ("Input can't end with '%s'", input.charAt(input.length() - 1)));
     }
     return tokenize(delim, numbers).sum();
   }
@@ -46,15 +46,15 @@ public class Calculator {
       checkIfNumberIsPositive(number);
       return Stream.of(str);
     } catch (NumberFormatException exception) {
-      String invalid = Arrays.stream(str.split("")).filter(s -> !StringUtils.isNumeric(s))
+      String invalidChar = Arrays.stream(str.split("")).filter(s -> !StringUtils.isNumeric(s))
           .findFirst().orElse("");
-      throw new IllegalArgumentException(
-          "'" + delim.get(0) + "' expected but '" + invalid + "' found at position " + index);
+      throw new IllegalArgumentException(String.format("'%s' expected but '%s' found at position %s",
+          delim.get(0), invalidChar, index));
     }
   }
   private void checkIfNumberIsPositive(Integer stringNumber) {
       if (stringNumber < 0) {
-        throw new IllegalArgumentException("Negative number(s) not allowed: " + stringNumber);
+        throw new IllegalArgumentException(String.format("Negative number(s) not allowed: %s", stringNumber));
       }
     }
 
