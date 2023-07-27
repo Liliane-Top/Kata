@@ -39,7 +39,8 @@ public class Kata2WithYasharTests {
         Arguments.of("435,5,6", 446),
         Arguments.of("1,2\n3", 6),
         Arguments.of("//;\n1;3", 4),
-        Arguments.of("//;\n2;3", 5));
+        Arguments.of("//;\n2;3", 5),
+        Arguments.of("//|\n1|2|3", 6));
   }
 
 
