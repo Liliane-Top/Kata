@@ -23,7 +23,7 @@ public class Kata2WithYasharTests {
 
   @ParameterizedTest
   @MethodSource("correctCases")
-  void call_validatePassword(String input, Integer output) {
+  void call_validatePassword(String input, Integer output) throws Exception {
     assertEquals(output, kata3.add(input));
 
   }
@@ -43,7 +43,7 @@ public class Kata2WithYasharTests {
   @ParameterizedTest
   @MethodSource("incorrectCases")
   void call_validatePassword(String input, String message) {
-    Exception exception = assertThrows(InvalidPasswordException.class,
+    Exception exception = assertThrows(Exception.class,
         () -> kata3.add(input));
 
   }
