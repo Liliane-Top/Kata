@@ -2,7 +2,6 @@ package com.example.kata;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -12,25 +11,26 @@ import org.apache.commons.lang3.tuple.Pair;
 public class Calculator {
 
   public Integer add(String input) throws IllegalArgumentException {
-    Pair<List<String>, String> parsed = parse(input);
-    List<String> delim = parsed.getLeft();
+    var parsed = parse(input);
+    var delimiters = parsed.getLeft();
     String numbers = parsed.getRight();
 
     validateInputEnding(input, numbers);
 
-    Stream<Integer> validInput = retrieveAllNumbersFromInput(delim, numbers);
+    var onlyNumbers = retrieveAllNumbersFromInput(delimiters, numbers);
 
-    return filteringPositiveNumbers(validInput)
-        .reduce(0, Integer::sum);
+    var onlyPositiveNumbers = filteringPositiveNumbers(onlyNumbers);
+
+    return onlyPositiveNumbers.reduce(0, Integer::sum);
   }
 
   private Pair<List<String>, String> parse(String input) {
-    List<String> delim = List.of(",", "\n");
+    var delimiters = List.of(",", "\n");
     if (input.startsWith("//")) {
-      delim = List.of(input.substring(2).split("\n")[0]);
+      delimiters = List.of(input.substring(2).split("\n")[0]);
       input = input.substring(2).split("\n")[1];
     }
-    return Pair.of(delim, input);
+    return Pair.of(delimiters, input);
   }
 
   private static void validateInputEnding(String input, String numbers) {
@@ -41,7 +41,7 @@ public class Calculator {
   }
 
   private Stream<Integer> retrieveAllNumbersFromInput(List<String> delim, String numbers) {
-    AtomicInteger index = new AtomicInteger(1);
+    var index = new AtomicInteger(1);
     return tokenize(delim, numbers)
         .flatMap(str -> filteringAllNumbers(delim, str, index));
   }
@@ -66,12 +66,12 @@ public class Calculator {
   }
 
   private Stream<Integer> filteringPositiveNumbers(Stream<Integer> numbers) {
-    Map<Boolean, List<Integer>> numbersDivided = numbers.collect(
+    var numbersPartitionedBySign = numbers.collect(
         Collectors.partitioningBy(number -> number > 0));
 
-    List<Integer> integersNegative = numbersDivided.get(false);
+    var integersNegative = numbersPartitionedBySign.get(false);
     if (integersNegative.isEmpty()) {
-      return numbersDivided.get(true).stream();
+      return numbersPartitionedBySign.get(true).stream();
     } else {
       throwNoNegativesAllowedException(integersNegative);
       return Stream.empty();
