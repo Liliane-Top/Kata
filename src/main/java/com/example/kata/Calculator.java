@@ -43,7 +43,7 @@ public class Calculator {
   private Stream<Integer> retrieveAllNumbersFromInput(List<String> delim, String numbers) {
     AtomicInteger index = new AtomicInteger(1);
     return tokenize(delim, numbers)
-        .flatMap(str -> filteringNumbers(delim, str, index));
+        .flatMap(str -> filteringAllNumbers(delim, str, index));
   }
 
   private Stream<String> tokenize(List<String> delim, String numbers) {
@@ -51,7 +51,7 @@ public class Calculator {
         .filter(s -> !s.isEmpty());
   }
 
-  private Stream<Integer> filteringNumbers(List<String> delim, String str,
+  private Stream<Integer> filteringAllNumbers(List<String> delim, String str,
       AtomicInteger index) {
     try {
       index.getAndIncrement();
@@ -73,18 +73,19 @@ public class Calculator {
     if (integersNegative.isEmpty()) {
       return numbersDivided.get(true).stream();
     } else {
-      String negatives = integersNegative.get(0).toString();
-      for (int i = 1; i < integersNegative.size(); i++) {
-        negatives = negatives.concat("," + integersNegative.get(i));
-      }
-      throw new IllegalArgumentException(
-          String.format("Negative number(s) not allowed: %s", negatives));
+      throwNoNegativesAllowedException(integersNegative);
+      return Stream.empty();
     }
   }
 
-
-
-
+  private void throwNoNegativesAllowedException(List<Integer> integersNegative) {
+    String negatives = integersNegative.get(0).toString();
+    for (int i = 1; i < integersNegative.size(); i++) {
+      negatives = negatives.concat(", " + integersNegative.get(i));
+    }
+    throw new IllegalArgumentException(
+        String.format("Negative number(s) not allowed: %s", negatives));
+  }
 
 
 }
