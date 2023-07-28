@@ -2,7 +2,9 @@ package com.example.kata;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -13,35 +15,35 @@ public class Calculator {
     Pair<List<String>, String> parsed = parse(input);
     List<String> delim = parsed.getLeft();
     String numbers = parsed.getRight();
-    AtomicInteger index = new AtomicInteger(1);
 
+    validateInputEnding(input, numbers);
+
+    Stream<Integer> validInput = retrieveAllNumbersFromInput(delim, numbers);
+
+    return filteringPositiveNumbers(validInput)
+        .reduce(0, Integer::sum);
+  }
+
+  private Pair<List<String>, String> parse(String input) {
+    List<String> delim = List.of(",", "\n");
+    if (input.startsWith("//")) {
+      delim = List.of(input.substring(2).split("\n")[0]);
+      input = input.substring(2).split("\n")[1];
+    }
+    return Pair.of(delim, input);
+  }
+
+  private static void validateInputEnding(String input, String numbers) {
     if (numbers.matches(".*\\D")) {
       throw new IllegalArgumentException(String.format
           ("Input can't end with '%s'", input.charAt(input.length() - 1)));
     }
-
-    Stream<Integer> validInput = tokenize(delim, numbers)
-        .flatMap(str -> checkIfValueIsANumber(delim, str, index));
-
-    checkIfValueIsAPositiveNumber(validInput);
-
-    Stream<Integer> validInput2 = tokenize(delim, numbers)
-        .flatMap(str -> checkIfValueIsANumber(delim, str, index));
-
-    return validInput2.reduce(0, Integer::sum);
   }
 
-  private void checkIfValueIsAPositiveNumber(Stream<Integer> validInput) {
-    List<Integer> negativeNumbers = validInput.filter(number -> number< 0).toList();
-
-    if (!negativeNumbers.isEmpty()) {
-      String negatives = negativeNumbers.get(0).toString();
-      for (int i = 1; i < negativeNumbers.size(); i++) {
-        negatives = negatives.concat("," + negativeNumbers.get(i));
-      }
-      throw new IllegalArgumentException(
-          String.format("Negative number(s) not allowed: %s", negatives));
-    }
+  private Stream<Integer> retrieveAllNumbersFromInput(List<String> delim, String numbers) {
+    AtomicInteger index = new AtomicInteger(1);
+    return tokenize(delim, numbers)
+        .flatMap(str -> filteringNumbers(delim, str, index));
   }
 
   private Stream<String> tokenize(List<String> delim, String numbers) {
@@ -49,7 +51,7 @@ public class Calculator {
         .filter(s -> !s.isEmpty());
   }
 
-  private Stream<Integer> checkIfValueIsANumber(List<String> delim, String str,
+  private Stream<Integer> filteringNumbers(List<String> delim, String str,
       AtomicInteger index) {
     try {
       index.getAndIncrement();
@@ -62,12 +64,27 @@ public class Calculator {
               delim.get(0), invalidChar, index));
     }
   }
-  private Pair<List<String>, String> parse(String input) {
-    List<String> delim = List.of(",", "\n");
-    if (input.startsWith("//")) {
-      delim = List.of(input.substring(2).split("\n")[0]);
-      input = input.substring(2).split("\n")[1];
+
+  private Stream<Integer> filteringPositiveNumbers(Stream<Integer> numbers) {
+    Map<Boolean, List<Integer>> numbersDivided = numbers.collect(
+        Collectors.partitioningBy(number -> number > 0));
+
+    List<Integer> integersNegative = numbersDivided.get(false);
+    if (integersNegative.isEmpty()) {
+      return numbersDivided.get(true).stream();
+    } else {
+      String negatives = integersNegative.get(0).toString();
+      for (int i = 1; i < integersNegative.size(); i++) {
+        negatives = negatives.concat("," + integersNegative.get(i));
+      }
+      throw new IllegalArgumentException(
+          String.format("Negative number(s) not allowed: %s", negatives));
     }
-    return Pair.of(delim, input);
   }
+
+
+
+
+
+
 }
