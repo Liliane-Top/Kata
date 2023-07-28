@@ -3,60 +3,73 @@ package com.example.kata;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class Calculator {
 
+
   public Integer add(String input) throws IllegalArgumentException {
-
     Pair<List<String>, String> parsed = parse(input);
-
     List<String> delim = parsed.getLeft();
     String numbers = parsed.getRight();
+    AtomicInteger index = new AtomicInteger(1);
 
-    if (StringUtils.isNumeric(numbers)) {
-      return Integer.parseInt(numbers);
-    }
-    if (numbers.isEmpty()) {
-      return 0;
-    }
     if (numbers.matches(".*\\D")) {
       throw new IllegalArgumentException(String.format
           ("Input can't end with '%s'", input.charAt(input.length() - 1)));
     }
-    return tokenize(delim, numbers).sum();
+
+    Stream<Integer> validInput = tokenize(delim, numbers)
+        .flatMap(str -> checkIfValueIsANumber(delim, str, index));
+
+    List<Integer> negativeNumbers = validInput.flatMap(number -> checkIfNumberIsNegative(number))
+        .toList();
+
+
+    if (!negativeNumbers.isEmpty()) {
+      String negatives = negativeNumbers.get(0).toString();
+      for (int i = 1; i < negativeNumbers.size(); i++) {
+        negatives = negatives.concat( "," + negativeNumbers.get(i));
+      }
+      throw new IllegalArgumentException(
+          String.format("Negative number(s) not allowed: %s", negatives));
+    }
+    Stream<Integer> validInput2 = tokenize(delim, numbers)
+        .flatMap(str -> checkIfValueIsANumber(delim, str, index));
+
+
+    return validInput2.reduce(0, Integer::sum);
   }
 
-  private IntStream tokenize(List<String> delim, String numbers) {
-    AtomicInteger index = new AtomicInteger(1);
+  private Stream<String> tokenize(List<String> delim, String numbers) {
     return Arrays.stream(numbers.split(delim.toString()))
-        .filter(s -> !s.isEmpty())
-        .flatMap(str -> checkIfOnlyPositiveNumbers(delim, index, str))
-        .mapToInt(Integer::parseInt);
+        .filter(s -> !s.isEmpty());
   }
 
-  private Stream<String> checkIfOnlyPositiveNumbers(List<String> delim, AtomicInteger index,
-      String str) {
+
+  private Stream<Integer> checkIfValueIsANumber(List<String> delim, String str,
+      AtomicInteger index) {
     try {
       index.getAndIncrement();
-      Integer number = Integer.parseInt(str);
-      checkIfNumberIsPositive(number);
-      return Stream.of(str);
+      return Stream.of(Integer.parseInt(str));
     } catch (NumberFormatException exception) {
       String invalidChar = Arrays.stream(str.split("")).filter(s -> !StringUtils.isNumeric(s))
           .findFirst().orElse("");
-      throw new IllegalArgumentException(String.format("'%s' expected but '%s' found at position %s",
-          delim.get(0), invalidChar, index));
+      throw new IllegalArgumentException(
+          String.format("'%s' expected but '%s' found at position %s",
+              delim.get(0), invalidChar, index));
     }
   }
-  private void checkIfNumberIsPositive(Integer stringNumber) {
-      if (stringNumber < 0) {
-        throw new IllegalArgumentException(String.format("Negative number(s) not allowed: %s", stringNumber));
-      }
+
+  private Stream<Integer> checkIfNumberIsNegative(Integer number) {
+    if (number < 0) {
+      return Stream.of(number);
+    } else {
+      return Stream.empty();
     }
+  }
 
   private Pair<List<String>, String> parse(String input) {
     List<String> delim = List.of(",", "\n");
