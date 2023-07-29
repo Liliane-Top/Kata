@@ -1,5 +1,7 @@
 package com.example.kata;
 
+import com.example.kata.exceptions.InvalidInputForCalculatorException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -10,7 +12,10 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public class Calculator {
 
-  public Integer add(String input) throws IllegalArgumentException {
+  List<String> errorMessages = new ArrayList<>();
+
+  public Integer add(String input)
+      throws IllegalArgumentException, InvalidInputForCalculatorException {
     var parsed = parse(input);
     var delimiters = parsed.getLeft();
     String numbers = parsed.getRight();
@@ -21,7 +26,11 @@ public class Calculator {
 
     var onlyPositiveNumbers = filteringPositiveNumbers(onlyNumbers);
 
-    return onlyPositiveNumbers.reduce(0, Integer::sum);
+    if (errorMessages.isEmpty()) {
+      return onlyPositiveNumbers.reduce(0, Integer::sum);
+    } else {
+      throw new InvalidInputForCalculatorException(errorMessages);
+    }
   }
 
   private Pair<List<String>, String> parse(String input) {
@@ -33,10 +42,12 @@ public class Calculator {
     return Pair.of(delimiters, input);
   }
 
-  private static void validateInputEnding(String input, String numbers) {
+  private void validateInputEnding(String input, String numbers)
+      throws InvalidInputForCalculatorException {
     if (numbers.matches(".*\\D")) {
-      throw new IllegalArgumentException(String.format
+      errorMessages.add(String.format
           ("Input can't end with '%s'", input.charAt(input.length() - 1)));
+      throw new InvalidInputForCalculatorException(errorMessages);
     }
   }
 
@@ -55,14 +66,17 @@ public class Calculator {
       AtomicInteger index) {
     try {
       index.getAndIncrement();
-      return Stream.of(Integer.parseInt(str));
+      return filteringPositiveNumbers(Stream.of(Integer.parseInt(str)));
     } catch (NumberFormatException exception) {
       String invalidChar = Arrays.stream(str.split("")).filter(s -> !StringUtils.isNumeric(s))
           .findFirst().orElse("");
-      throw new IllegalArgumentException(
-          String.format("'%s' expected but '%s' found at position %s",
-              delim.get(0), invalidChar, index));
+      errorMessages.add(String.format("'%s' expected but '%s' found at position %s",
+          delim.get(0), invalidChar, index));
+      String[] replaceInvalidChar = str.split(invalidChar);
+      Stream<Integer> numbers = Stream.of(replaceInvalidChar).map(Integer::valueOf);
+      return filteringPositiveNumbers(numbers);
     }
+
   }
 
   private Stream<Integer> filteringPositiveNumbers(Stream<Integer> numbers) {
@@ -79,13 +93,9 @@ public class Calculator {
   }
 
   private void throwNoNegativesAllowedException(List<Integer> integersNegative) {
-    String negatives = integersNegative.get(0).toString();
-    for (int i = 1; i < integersNegative.size(); i++) {
-      negatives = negatives.concat(", " + integersNegative.get(i));
-    }
-    throw new IllegalArgumentException(
-        String.format("Negative number(s) not allowed: %s", negatives));
+    String negative = integersNegative.get(0).toString();
+    errorMessages.add(String.format("Negative number(s) not allowed: %s", negative));
   }
-
-
 }
+
+
