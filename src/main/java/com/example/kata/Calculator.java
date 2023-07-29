@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
@@ -72,7 +73,7 @@ public class Calculator {
           .findFirst().orElse("");
       errorMessages.add(String.format("'%s' expected but '%s' found at position %s",
           delim.get(0), invalidChar, index));
-      String[] replaceInvalidChar = str.split(invalidChar);
+      String[] replaceInvalidChar = str.split(Pattern.quote(invalidChar));
       Stream<Integer> numbers = Stream.of(replaceInvalidChar).map(Integer::valueOf);
       return filteringPositiveNumbers(numbers);
     }
