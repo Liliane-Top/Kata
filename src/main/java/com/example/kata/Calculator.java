@@ -21,9 +21,9 @@ public class Calculator {
     var delimiters = parsed.getLeft();
     String numbers = parsed.getRight();
 
-    validateInputEnding(input, numbers);
+    var validEnding = validateInputEnding(input, numbers);
 
-    var onlyNumbers = retrieveAllNumbersFromInput(delimiters, numbers);
+    var onlyNumbers = retrieveAllNumbersFromInput(delimiters, validEnding);
 
     var onlyPositiveNumbers = filteringPositiveNumbers(onlyNumbers);
 
