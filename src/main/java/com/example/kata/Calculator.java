@@ -13,10 +13,9 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public class Calculator {
 
-  List<String> errorMessages = new ArrayList<>();
+  private final List<String> errorMessages = new ArrayList<>();
 
-  public Integer add(String input)
-      throws IllegalArgumentException, InvalidInputForCalculatorException {
+  public Integer add(String input) throws  InvalidInputForCalculatorException {
     var parsed = parse(input);
     var delimiters = parsed.getLeft();
     String numbers = parsed.getRight();
@@ -27,8 +26,10 @@ public class Calculator {
 
     var onlyPositiveNumbers = filteringPositiveNumbers(onlyNumbers);
 
+    var onlyNumbersBelow1000 = ignoreNumbersAbove1000(onlyPositiveNumbers);
+
     if (errorMessages.isEmpty()) {
-      return onlyPositiveNumbers.reduce(0, Integer::sum);
+      return onlyNumbersBelow1000.reduce(0, Integer::sum);
     } else {
       throw new InvalidInputForCalculatorException(errorMessages);
     }
@@ -44,23 +45,19 @@ public class Calculator {
   }
 
   private String validateInputEnding(String input, String numbers) {
-    if (numbers.matches(".*\\D")) {
-      errorMessages.add(String.format
-          ("Input can't end with '%s'", input.charAt(input.length() - 1)));
-      return numbers.replace("\\D", "");
-    }
-    return numbers;
+    return numbers.matches(".*\\D") ? replaceInvalidEnding(input, numbers) : numbers;
+  }
+
+  private String replaceInvalidEnding(String input, String numbers) {
+    createErrorMessageForInvalidEnding(input);
+    return numbers.replace("\\D", "");
   }
 
   private Stream<Integer> retrieveAllNumbersFromInput(List<String> delim, String numbers) {
     var index = new AtomicInteger(1);
-    return tokenize(delim, numbers)
-        .flatMap(str -> filteringAllNumbers(delim, str, index));
-  }
-
-  private Stream<String> tokenize(List<String> delim, String numbers) {
     return Arrays.stream(numbers.split(delim.toString()))
-        .filter(s -> !s.isEmpty());
+        .filter(s -> !s.isEmpty())
+        .flatMap(str -> filteringAllNumbers(delim, str, index));
   }
 
   private Stream<Integer> filteringAllNumbers(List<String> delim, String str,
@@ -69,39 +66,46 @@ public class Calculator {
       index.getAndIncrement();
       return filteringPositiveNumbers(Stream.of(Integer.parseInt(str)));
     } catch (NumberFormatException exception) {
-      return createErrorMessageForInvalidChar(delim, str, index);
+      return replaceInvalidDelimiter(delim, str, index);
     }
-
   }
-
-  
 
   private Stream<Integer> filteringPositiveNumbers(Stream<Integer> numbers) {
-    var numbersPartitionedBySign = numbers.collect(
-        Collectors.partitioningBy(number -> number > 0));
+    var partitionedBySign = numbers.collect(Collectors.partitioningBy(number -> number > 0));
+    var negatives = partitionedBySign.get(false);
 
-    var integersNegative = numbersPartitionedBySign.get(false);
-    if (integersNegative.isEmpty()) {
-      return numbersPartitionedBySign.get(true).stream();
-    } else {
-      createErrorMessageForNegativeNumbers(integersNegative);
-      return Stream.empty();
-    }
+    return negatives.isEmpty() ? partitionedBySign.get(true).stream() :
+        createErrorMessageForNegativeNumbers(negatives);
   }
 
-  private Stream<Integer> createErrorMessageForInvalidChar(List<String> delim, String str, AtomicInteger index) {
-    String invalidChar = Arrays.stream(str.split("")).filter(s -> !StringUtils.isNumeric(s))
+  private Stream<Integer> ignoreNumbersAbove1000(Stream<Integer> onlyPositiveNumbers) {
+    return onlyPositiveNumbers.map(number -> (number > 1000? 0 : number));
+  }
+
+  private Stream<Integer> replaceInvalidDelimiter(List<String> delim, String str,
+      AtomicInteger index) {
+    String invalidDelimiter = Arrays.stream(str.split("")).filter(s -> !StringUtils.isNumeric(s))
         .findFirst().orElse("");
-    errorMessages.add(String.format("'%s' expected but '%s' found at position %s",
-        delim.get(0), invalidChar, index));
-    String[] replaceInvalidChar = str.split(Pattern.quote(invalidChar));
+    createErrorMessageForInvalidDelimiter(delim, index, invalidDelimiter);
+
+    String[] replaceInvalidChar = str.split(Pattern.quote(invalidDelimiter));
     Stream<Integer> numbers = Stream.of(replaceInvalidChar).map(Integer::valueOf);
     return filteringPositiveNumbers(numbers);
   }
 
-  private void createErrorMessageForNegativeNumbers(List<Integer> integersNegative) {
-    String negative = integersNegative.get(0).toString();
-    errorMessages.add(String.format("Negative number(s) not allowed: %s", negative));
+  private void createErrorMessageForInvalidEnding(String input) {
+    errorMessages.add(String.format
+        ("Input can't end with '%s'", input.charAt(input.length() - 1)));
+  }
+
+  private void createErrorMessageForInvalidDelimiter(List<String> delim, AtomicInteger index, String invalidDelimiter) {
+    errorMessages.add(String.format("'%s' expected but '%s' found at position %s",
+        delim.get(0), invalidDelimiter, index));
+  }
+
+  private Stream<Integer> createErrorMessageForNegativeNumbers(List<Integer> negatives) {
+    errorMessages.add(String.format("Negative number(s) not allowed: %s", negatives.get(0).toString()));
+    return Stream.empty();
   }
 }
 
