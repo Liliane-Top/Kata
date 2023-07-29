@@ -42,7 +42,8 @@ public class Kata2WithYasharTests {
         Arguments.of("//;\n1;3", 4),
         Arguments.of("//;\n2;3", 5),
         Arguments.of("//|\n1|2|3", 6),
-        Arguments.of("//sep\n2sep5", 7));
+        Arguments.of("//sep\n2sep5", 7),
+        Arguments.of("2,1002", 2));
   }
 
 
@@ -66,8 +67,10 @@ public class Kata2WithYasharTests {
         Arguments.of("1,-2", "Negative number(s) not allowed: -2"),
         Arguments.of("2,-4,-9", "Negative number(s) not allowed: -4, -9"),
         Arguments.of("//|\n1|2,-3", "Negative number(s) not allowed: -3\n'|' expected but ',' found at position 3"),
-        Arguments.of("//|\n1|2,-3|","Negative number(s) not allowed: -3"
-            + "\n'|' expected but ',' found at position 3"
-            + "\nInput can't end with '|'" ));
+        Arguments.of("//|\n1|2,-3|", """
+            Negative number(s) not allowed: -3
+            '|' expected but ',' found at position 3
+            Input can't end with '|'"""));
+
   }
 }
