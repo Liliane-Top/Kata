@@ -13,19 +13,17 @@ public class InvalidInputForCalculatorException extends Exception {
   }
 
   public String printErrorMessage(List<String> messages) {
-    message = "";
+    StringBuilder message = new StringBuilder();
 
     for (String errorMessage : messages) {
-      if (message.contains("Negative") ) {
-        message += "," + errorMessage.substring(31);
-      } else if (errorMessage.contains("expected")) {
-        message += errorMessage;
-      } else if(message.isEmpty()) {
-        message += errorMessage;
-      } else {
-        message = errorMessage + "\n" + message;
+      if (message.isEmpty()) {
+        message.append(errorMessage);
+      } else if (message.toString().contains("Negative")) {
+        message.append("," + errorMessage.substring(31));
+      } else if (messages.size() >1) {
+        message.insert(0,errorMessage + "\n");
       }
     }
-    return message;
+    return message.toString();
   }
 }
