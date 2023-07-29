@@ -43,13 +43,13 @@ public class Calculator {
     return Pair.of(delimiters, input);
   }
 
-  private void validateInputEnding(String input, String numbers)
-      throws InvalidInputForCalculatorException {
+  private String validateInputEnding(String input, String numbers) {
     if (numbers.matches(".*\\D")) {
       errorMessages.add(String.format
           ("Input can't end with '%s'", input.charAt(input.length() - 1)));
-      throw new InvalidInputForCalculatorException(errorMessages);
+      return numbers.replace("\\D", "");
     }
+    return numbers;
   }
 
   private Stream<Integer> retrieveAllNumbersFromInput(List<String> delim, String numbers) {
@@ -69,16 +69,12 @@ public class Calculator {
       index.getAndIncrement();
       return filteringPositiveNumbers(Stream.of(Integer.parseInt(str)));
     } catch (NumberFormatException exception) {
-      String invalidChar = Arrays.stream(str.split("")).filter(s -> !StringUtils.isNumeric(s))
-          .findFirst().orElse("");
-      errorMessages.add(String.format("'%s' expected but '%s' found at position %s",
-          delim.get(0), invalidChar, index));
-      String[] replaceInvalidChar = str.split(Pattern.quote(invalidChar));
-      Stream<Integer> numbers = Stream.of(replaceInvalidChar).map(Integer::valueOf);
-      return filteringPositiveNumbers(numbers);
+      return createErrorMessageForInvalidChar(delim, str, index);
     }
 
   }
+
+  
 
   private Stream<Integer> filteringPositiveNumbers(Stream<Integer> numbers) {
     var numbersPartitionedBySign = numbers.collect(
@@ -88,12 +84,22 @@ public class Calculator {
     if (integersNegative.isEmpty()) {
       return numbersPartitionedBySign.get(true).stream();
     } else {
-      throwNoNegativesAllowedException(integersNegative);
+      createErrorMessageForNegativeNumbers(integersNegative);
       return Stream.empty();
     }
   }
 
-  private void throwNoNegativesAllowedException(List<Integer> integersNegative) {
+  private Stream<Integer> createErrorMessageForInvalidChar(List<String> delim, String str, AtomicInteger index) {
+    String invalidChar = Arrays.stream(str.split("")).filter(s -> !StringUtils.isNumeric(s))
+        .findFirst().orElse("");
+    errorMessages.add(String.format("'%s' expected but '%s' found at position %s",
+        delim.get(0), invalidChar, index));
+    String[] replaceInvalidChar = str.split(Pattern.quote(invalidChar));
+    Stream<Integer> numbers = Stream.of(replaceInvalidChar).map(Integer::valueOf);
+    return filteringPositiveNumbers(numbers);
+  }
+
+  private void createErrorMessageForNegativeNumbers(List<Integer> integersNegative) {
     String negative = integersNegative.get(0).toString();
     errorMessages.add(String.format("Negative number(s) not allowed: %s", negative));
   }
