@@ -1,20 +1,22 @@
 package com.example.kata;
 
+import java.util.stream.Collectors;
+
 public class CitySearch {
 
   public String search(String searchText) {
-    StringBuilder citiesFound = new StringBuilder();
 
-    for (String city : ListOfCities.cities) {
-      if (searchText.equals("*")) {
-        citiesFound.append(String.format("%s ", city));
-      }   else if (searchText.length() < 2) {
-        return "";
-      } else if (city.toLowerCase().contains(searchText.toLowerCase())) {
-        citiesFound.append(String.format("%s ", city));
-      }
+    if (searchText.equals("*")) {
+      return ListOfCities.cities.stream().collect(Collectors.joining(" "));
     }
-    return citiesFound.toString().trim();
+
+    if (searchText.length() < 2) {
+      return "";
+    }
+
+    return ListOfCities.cities.stream()
+        .filter(city -> city.toLowerCase().contains(searchText.toLowerCase()))
+        .collect(Collectors.joining(" "));
   }
 
 }
