@@ -26,7 +26,8 @@ public class Kata4Tests {
     return Stream.of(
         Arguments.of("", null),
         Arguments.of("V", null),
-        Arguments.of("Amsterdam", "Amsterdam"));
+        Arguments.of("Amsterdam", "Amsterdam"),
+        Arguments.of("Va", "Valencia, Vancouver"));
 
   }
 
