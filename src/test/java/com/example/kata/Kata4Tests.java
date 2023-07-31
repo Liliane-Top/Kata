@@ -36,19 +36,5 @@ public class Kata4Tests {
 
   }
 
-//  @ParameterizedTest
-//  @MethodSource("incorrectCases")
-//  void call_search_return_null(String input, String output) {
-//    assertEquals(output, citySearch.search(input));
-//
-//  }
-//
-//  public static Stream<Arguments> incorrectCases() {
-//    return Stream.of(
-//        Arguments.of("", null));
-//
-//  }
-
-
 }
 
