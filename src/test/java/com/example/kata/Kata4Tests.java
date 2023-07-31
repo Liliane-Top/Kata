@@ -12,15 +12,13 @@ public class Kata4Tests {
 
   CitySearch citySearch = new CitySearch();
 
-  //1. If the search text is fewer than 2 characters, then should return no results.
-  // (It is an optimization feature of the search functionality.)
-
   @ParameterizedTest
   @MethodSource("correctCases")
   void call_search(String input, String output) {
     assertEquals(output, citySearch.search(input));
 
   }
+
 
   public static Stream<Arguments> correctCases() {
     return Stream.of(
@@ -30,7 +28,11 @@ public class Kata4Tests {
         Arguments.of("Va", "Valencia Vancouver"),
         Arguments.of("amsterdam", "Amsterdam"),
         Arguments.of("AMSTERdam", "Amsterdam"),
-        Arguments.of("vA", "Valencia Vancouver"));
+        Arguments.of("vA", "Valencia Vancouver"),
+        Arguments.of("ape", "Budapest"),
+        Arguments.of("Ape", "Budapest"),
+        Arguments.of("ME", "Rome"),
+        Arguments.of("*", "Paris Budapest Skopje Rotterdam Valencia Vancouver Amsterdam Vienna Sydney New York City London Bangkok Hong Kong Dubai Rome Istanbul"));
 
   }
 
