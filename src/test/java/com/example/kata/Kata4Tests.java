@@ -24,10 +24,13 @@ public class Kata4Tests {
 
   public static Stream<Arguments> correctCases() {
     return Stream.of(
-        Arguments.of("", null),
-        Arguments.of("V", null),
+        Arguments.of("", ""),
+        Arguments.of("V", ""),
         Arguments.of("Amsterdam", "Amsterdam"),
-        Arguments.of("Va", "Valencia, Vancouver"));
+        Arguments.of("Va", "Valencia Vancouver"),
+        Arguments.of("amsterdam", "Amsterdam"),
+        Arguments.of("AMSTERdam", "Amsterdam"),
+        Arguments.of("vA", "Valencia Vancouver"));
 
   }
 
