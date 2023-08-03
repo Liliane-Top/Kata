@@ -46,7 +46,8 @@ public class RefactoredKata2Tests {
   static Stream<Arguments> incorrectCases() {
     return Stream.of(
         Arguments.of("1,2,", "Input can't end with a delimiter"),
-        Arguments.of("1,2,3\n", "Input can't end with a delimiter")
+        Arguments.of("1,2,3\n", "Input can't end with a delimiter"),
+        Arguments.of("//|\n1|2,3","'|' expected but ',' found at position 3." )
     );
   }
 

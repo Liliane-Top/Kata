@@ -23,7 +23,7 @@ public class Kata2 {
     }
 
     if (input.startsWith("//")) {
-      delimiters.add(input.substring(2).split("\\n")[0]);
+      delimiters = List.of(input.substring(2).split("\\n")[0]);
       input = input.split("\\n")[1];
     }
 
