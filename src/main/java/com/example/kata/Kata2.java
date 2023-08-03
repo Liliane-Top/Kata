@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
@@ -39,7 +40,15 @@ public class Kata2 {
   }
 
   private IntStream parseNumbers(String[] numbers) {
-    return Stream.of(numbers).filter(number -> !number.isEmpty()).mapToInt(Integer::parseInt);
+    AtomicInteger index = new AtomicInteger();
+    try{
+      index.getAndIncrement();
+      return Stream.of(numbers).filter(number -> !number.isEmpty()).mapToInt(Integer::parseInt);
+
+    } catch (NumberFormatException exception){
+      String message = String.format("'%s' expected but found '%s' at position %s", delimiter, number, index);
+      throw new NumberFormatException(message);
+    }
   }
 
 
