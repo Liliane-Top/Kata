@@ -4,9 +4,8 @@ public class ErrorMessage {
 
   public static StringBuilder errorMessages = new StringBuilder();
 
-  public static String createErrorMessage(String errorMessage) {
+  public static void createErrorMessage(String errorMessage) {
     errorMessages.append(errorMessage);
-    return errorMessages.toString();
 
   }
 

@@ -4,13 +4,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.stream.Stream;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 class CalculatorTests {
 
-  Calculator calculator = new Calculator();
+  Calculator calculator;
+
+  @BeforeEach
+  void setUp(){
+    calculator = new Calculator();
+    ErrorMessage.errorMessages = new StringBuilder();
+  }
+
 
   @ParameterizedTest
   @MethodSource("validInput")
@@ -44,7 +53,10 @@ class CalculatorTests {
 
   static Stream<Arguments> invalidInput() {
     return Stream.of(
-        Arguments.of("1,2,", "Separator at the end is not allowed")
+        Arguments.of("1,2,", "Separator at the end is not allowed."),
+        Arguments.of("//sep\n1sep2,3", "'sep' expected but ',' found at position 3."),
+        Arguments.of("//|\n1|2,3", "'|' expected but ',' found at position 3."),
+        Arguments.of("//;\n45;2;8|9", "';' expected but '|' found at position 4.")
     );
   }
 

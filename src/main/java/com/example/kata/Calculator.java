@@ -22,11 +22,14 @@ public class Calculator {
 
     return Optional.of(Arrays.stream(input.split(String.valueOf(delimiters)))
             .filter(str -> !str.isEmpty())
-            .mapToInt(Integer::parseInt)
+            .flatMap(Validator.checkIfValuesIsANumber(delimiters))
+            .mapToInt(Integer::intValue)
             .map(checkErrors())
             .sum())
         .orElse(0);
   }
+
+
 
   private static IntUnaryOperator checkErrors() {
     return number -> {

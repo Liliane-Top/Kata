@@ -21,28 +21,11 @@ class Kata2Tests {
 
 
 
-  //5. Allow the add method to handle different delimiters
-  //
-  //To change the delimiter, the beginning of the input will contain a separate line
-  // that looks like this:
-  ////[delimiter]\n[numbers]
-  //“//;\n1;3” should return “4”
-  //“//|\n1|2|3” should return “6”
-  //“//sep\n2sep5” should return “7”
-
-
-  @Test
-  void call_addWithDifferentDelimiters_returnSumOfArgument() {
-    assertEquals(4, kata2.add("//;\n1;3"));
-    assertEquals(9, kata2.add("//;\n1;3;5"));
-    assertEquals(6, kata2.add("//|\n1|2|3"));
-    assertEquals(7, kata2.add("//sep\n2sep5"));
-  }
 
 
   @Test
   void call_addWithDifferentDelimitersAndInvalidString_throwsException() {
-    assertThrows(IllegalArgumentException.class, () -> kata2.add("//|\n1|2,3"));
+    assertThrows(IllegalArgumentException.class, () -> kata2.add());
   }
 
 
