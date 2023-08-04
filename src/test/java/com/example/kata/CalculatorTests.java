@@ -1,0 +1,45 @@
+package com.example.kata;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.stream.Stream;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+class CalculatorTests {
+
+  Calculator calculator = new Calculator();
+
+  @ParameterizedTest
+  @MethodSource("validInput")
+  void call_add_withValidInput(String input, int output) {
+    assertEquals(output, calculator.add(input));
+  }
+
+  static Stream<Arguments> validInput() {
+    return Stream.of(
+        Arguments.of("", 0),
+        Arguments.of("1", 1),
+        Arguments.of("1,2", 3),
+        Arguments.of("456,7", 463),
+        Arguments.of("1,2,2,3,4,7", 19),
+        Arguments.of("1,2\n3", 6)
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("invalidInput")
+  void call_add_withInvalidInput(String input, String message) {
+    Exception exception = assertThrows(NumberFormatException.class, () -> calculator.add(input));
+    assertEquals(message, exception.getMessage());
+  }
+
+  static Stream<Arguments> invalidInput() {
+    return Stream.of(
+        Arguments.of("1,2,", "Separator at the end is not allowed")
+    );
+  }
+
+}
