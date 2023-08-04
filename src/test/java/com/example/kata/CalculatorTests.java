@@ -25,7 +25,8 @@ class CalculatorTests {
         Arguments.of("1,2", 3),
         Arguments.of("456,7", 463),
         Arguments.of("1,2,2,3,4,7", 19),
-        Arguments.of("1,2\n3", 6)
+        Arguments.of("1,2\n3", 6),
+        Arguments.of("1\n2,3", 6)
     );
   }
 
