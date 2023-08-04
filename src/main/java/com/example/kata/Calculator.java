@@ -14,6 +14,12 @@ public class Calculator {
 
     input = Validator.validateInputEnding(input);
 
+   if(Validator.validateChangedDelimiter(input)){
+     String[] splittedString = input.split("\n");
+     delimiters = List.of(splittedString[0].substring(2));
+     input = splittedString[1];
+   };
+
     return Optional.of(Arrays.stream(input.split(String.valueOf(delimiters)))
             .filter(str -> !str.isEmpty())
             .mapToInt(Integer::parseInt)

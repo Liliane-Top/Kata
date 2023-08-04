@@ -26,7 +26,12 @@ class CalculatorTests {
         Arguments.of("456,7", 463),
         Arguments.of("1,2,2,3,4,7", 19),
         Arguments.of("1,2\n3", 6),
-        Arguments.of("1\n2,3", 6)
+        Arguments.of("1\n2,3", 6),
+        Arguments.of("//;\n1;3", 4),
+        Arguments.of("//;\n1;3;5", 9),
+        Arguments.of("//|\n1|2|3", 6),
+        Arguments.of("//sep\n2sep5", 7),
+        Arguments.of("//sep\nsep67sep98sep2sep34", 201)
     );
   }
 
@@ -42,5 +47,6 @@ class CalculatorTests {
         Arguments.of("1,2,", "Separator at the end is not allowed")
     );
   }
+
 
 }

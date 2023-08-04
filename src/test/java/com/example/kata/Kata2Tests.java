@@ -19,14 +19,7 @@ class Kata2Tests {
 
 
 
-  //4. Add validation to not to allow a separator at the end
-  //
-  //For example “1,2,” should return an error (or throw an exception)
 
-  @Test
-  void call_addWithArgumentsEndingWithDelimiter_throwsException() {
-    assertThrows(IllegalArgumentException.class, () -> kata2.add("1,2,"));
-  }
 
   //5. Allow the add method to handle different delimiters
   //

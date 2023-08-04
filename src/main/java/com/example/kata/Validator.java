@@ -3,7 +3,7 @@ package com.example.kata;
 public class Validator {
 
   public static String validateInputEnding(String input) {
-    String validInput = input.matches(".*\\D") ?  removeDelimiterAtEnd(input) : input;
+    String validInput = input.matches(".*\\D") ? removeDelimiterAtEnd(input) : input;
     return validInput;
   }
 
@@ -13,4 +13,7 @@ public class Validator {
   }
 
 
+  public static boolean validateChangedDelimiter(String input) {
+    return input.startsWith("//");
+  }
 }
