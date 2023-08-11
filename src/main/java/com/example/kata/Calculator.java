@@ -1,43 +1,34 @@
 package com.example.kata;
 
-import static com.example.kata.ErrorMessage.*;
+
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.function.IntUnaryOperator;
+import java.util.stream.IntStream;
 
+@AllArgsConstructor
+@Component
 public class Calculator {
 
-  public int add(String input) {
-    List<String> delimiters = List.of(",", "\n");
-
-    input = Validator.validateInputEnding(input);
-
-   if(Validator.validateChangedDelimiter(input)){
-     String[] splittedString = input.split("\n");
-     delimiters = List.of(splittedString[0].substring(2));
-     input = splittedString[1];
-   };
-
-    return Optional.of(Arrays.stream(input.split(String.valueOf(delimiters)))
-            .filter(str -> !str.isEmpty())
-            .flatMap(Validator.checkIfValuesIsANumber(delimiters))
-            .mapToInt(Integer::intValue)
-            .map(checkErrors())
-            .sum())
-        .orElse(0);
-  }
+    private final Parser parser;
+    private final Tokenizer tokenizer;
 
 
+    public int add(String input) {
 
-  private static IntUnaryOperator checkErrors() {
-    return number -> {
-      if (!errorMessages.isEmpty()) {
-        throw new NumberFormatException(errorMessages.toString());
-      }
-      return number;
-    };
-  }
+        ErrorBuilder errors = new ErrorBuilder();
+
+        Tokenizer.Tokenized tokenized = tokenizer.tokenize(input, errors);
+
+        int[] parsed = parser.parse(tokenized, errors);
+
+        if (errors.hasError())
+            throw errors.getException();
+
+        return Arrays.stream(parsed)
+                .sum();
+    }
 
 }
