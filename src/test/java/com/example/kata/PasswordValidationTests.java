@@ -3,10 +3,8 @@ package com.example.kata;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.example.kata.validators.AtLeast2DigitsValidator;
-import com.example.kata.validators.ContainsSpecialCharacterValidator;
-import com.example.kata.validators.ContainsUppercaseValidator;
-import com.example.kata.validators.LengthValidator;
+import com.example.kata.validators.*;
+
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,12 +14,15 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class PasswordValidationTests {
 
-  private PasswordValidation validation;
+  private PasswordValidator validation;
 
   @BeforeEach
   void setUp() {
-    validation = new PasswordValidation(new LengthValidator(), new AtLeast2DigitsValidator(),
-        new ContainsUppercaseValidator(), new ContainsSpecialCharacterValidator());
+    validation = PasswordValidator.combine(
+            new LengthValidator(),
+            new AtLeast2DigitsValidator(),
+            new ContainsUppercaseValidator(),
+            new ContainsSpecialCharacterValidator());
   }
 
 
