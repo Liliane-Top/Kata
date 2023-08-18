@@ -1,11 +1,9 @@
 package com.example.kata.validators;
 
-import com.example.kata.ErrormessageBuilder;
-
 public class ContainsSpecialCharacterValidator implements PasswordValidator {
 
   @Override
-  public void validate(String password, ErrormessageBuilder errors) {
+  public void validate(String password) throws IllegalArgumentException {
     int count = 0;
     for (int i = 0; i < password.length(); i++) {
       if (!Character.isDigit(password.charAt(i))
@@ -15,7 +13,7 @@ public class ContainsSpecialCharacterValidator implements PasswordValidator {
       }
     }
     if(count == 0){
-      errors.addErrorMessage("Password must contain at least one special character.");
+      throw new IllegalArgumentException("Password must contain at least one special character.");
     }
   }
 }

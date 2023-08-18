@@ -27,15 +27,15 @@ public class PasswordValidationTests {
 
   @ParameterizedTest
   @MethodSource("correctCases")
-  void call_validatePassword(String input, Boolean output) throws IllegalArgumentException {
-    assertEquals(output, validation.validatePassword(input));
+  void call_validatePassword(String input) throws IllegalArgumentException {
+    validation.validate(input);
 
   }
 
   public static Stream<Arguments> correctCases() {
     return Stream.of(
-        Arguments.of("0123C45-67", true),
-        Arguments.of("ab  *c12C 4567", true));
+        Arguments.of("0123C45-67"),
+        Arguments.of("ab  *c12C 4567"));
   }
 
   @ParameterizedTest
@@ -43,7 +43,7 @@ public class PasswordValidationTests {
   void call_validatePassword_withIncorrectPassword_returnsCorrectMessage(String input,
       String message) {
     Exception exception = assertThrows(IllegalArgumentException.class,
-        () -> validation.validatePassword(input));
+        () -> validation.validate(input));
     Assertions.assertEquals(message, exception.getMessage());
 
 

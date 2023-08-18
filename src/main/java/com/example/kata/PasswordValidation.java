@@ -1,32 +1,33 @@
 package com.example.kata;
 
-import com.example.kata.validators.AtLeast2DigitsValidator;
-import com.example.kata.validators.ContainsSpecialCharacterValidator;
-import com.example.kata.validators.ContainsUppercaseValidator;
-import com.example.kata.validators.LengthValidator;
+import com.example.kata.validators.*;
 
-public record PasswordValidation(LengthValidator lengthValidator,
-                                 AtLeast2DigitsValidator digitsValidator,
-                                 ContainsUppercaseValidator uppercaseValidator,
-                                 ContainsSpecialCharacterValidator specialCharacterValidator) {
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-  public boolean validatePassword(String password) {
+public record PasswordValidation(PasswordValidator... validators) implements PasswordValidator {
 
-    ErrormessageBuilder errors = new ErrormessageBuilder();
 
-    lengthValidator.validate(password, errors);
+    @Override
+    public void validate(String password) throws IllegalArgumentException {
 
-    digitsValidator.validate(password, errors);
+        List<String> errors = Arrays.stream(validators)
+                .map(validator -> {
+                    try {
+                        validator.validate(password);
+                    } catch (IllegalArgumentException e) {
+                        return e.getMessage();
+                    }
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .toList();
 
-    uppercaseValidator.validate(password, errors);
-
-    specialCharacterValidator.validate(password, errors);
-
-    if (errors.hasNoErrors()) {
-      return true;
-    } else {
-      throw new IllegalArgumentException(errors.getException().getMessage().trim());
+        if (!errors.isEmpty()) {
+            throw new IllegalArgumentException(String.join("\n", errors));
+        }
     }
-  }
-
 }
