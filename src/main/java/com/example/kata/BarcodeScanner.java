@@ -29,7 +29,12 @@ public class BarcodeScanner {
 
   public static String scanBarcode(String barcode){
 
-    return "$7.25";
+    return switch (barcode) {
+      case "12345" -> "$7.25";
+      case "23456" -> "$12.50";
+      default -> "unknown";
+    };
+
 
   }
 
