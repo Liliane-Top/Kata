@@ -32,6 +32,7 @@ public class BarcodeScanner {
     return switch (barcode) {
       case "12345" -> "$7.25";
       case "23456" -> "$12.50";
+      case "99999" -> "barcode not found";
       default -> "unknown";
     };
 
