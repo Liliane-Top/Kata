@@ -25,7 +25,8 @@ class BarcodeScannerTests {
   public static Stream<Arguments>  correctCases(){
     return Stream.of(
         Arguments.of( "12345", "$7.25"),
-        Arguments.of("23456", "$12.50")
+        Arguments.of("23456", "$12.50"),
+        Arguments.of("99999", "barcode not found")
     );
   }
 
