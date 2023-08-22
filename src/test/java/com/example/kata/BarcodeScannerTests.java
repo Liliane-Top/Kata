@@ -27,7 +27,8 @@ class BarcodeScannerTests {
         Arguments.of( "12345", "$7.25"),
         Arguments.of("23456", "$12.50"),
         Arguments.of("99999", "barcode not found"),
-        Arguments.of("", "empty barcode")
+        Arguments.of("", "empty barcode"),
+        Arguments.of("total", "$19.75")
     );
   }
 
