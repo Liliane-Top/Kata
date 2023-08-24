@@ -2,39 +2,42 @@ package com.example.kata;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class BarcodeScanner {
+  private final InputReader inputReader;
+  private final OutputWriter outputWriter;
 
-  private static final List<String> prices = new ArrayList<>();
+  public BarcodeScanner(InputReader inputReader, OutputWriter outputWriter) {
+    this.inputReader = inputReader;
+    this.outputWriter = outputWriter;
+  }
 
-  public static String getPrice(String... input) {
+  private final List<String> prices = new ArrayList<>();
+
+  public String run() {
     return getInputFromConsole();
   }
 
-  private static String getInputFromConsole() {
-    Scanner in = new Scanner(System.in);
-    System.out.println("Please enter a barcode: ");
+  private String getInputFromConsole() {
+//    outputWriter.write("Please enter a barcode: ");
     String price = null;
 
     do {
-      String input = in.nextLine();
+      String input = inputReader.read();
       if (input.equals("stop")) {
         break;
       }
-      System.out.println("You entered the following: " + input);
+//      outputWriter.write("You entered the following: " + input);
       price = scanBarcode(input);
-      System.out.println(price + "\n");
-      System.out.println("Please enter a barcode: ");
+      outputWriter.write(price);
+//      outputWriter.write("Please enter a barcode: ");
     }
-    while (in.hasNextLine());
-
-    in.close();
+    while (true);
 
     return price;
   }
 
-  private static String scanBarcode(String barcode) {
+  private String scanBarcode(String barcode) {
 
     return switch (barcode) {
       case "12345" -> {
@@ -52,11 +55,18 @@ public class BarcodeScanner {
     };
   }
 
-  private static String getTotal() {
+  private String getTotal() {
     double total = 0.0;
     for (String price : prices) {
       total += Double.parseDouble(price);
     }
     return "Total amount is $" + total;
+  }
+
+  public interface InputReader {
+    String read();
+  }
+  public interface OutputWriter {
+    void write(String output);
   }
 }
