@@ -14,11 +14,11 @@ public class BarcodeScanner {
 
   private final List<String> prices = new ArrayList<>();
 
-  public String run() {
-    return getInputFromConsole();
+  public void run() {
+    getInputFromConsole();
   }
 
-  private String getInputFromConsole() {
+  private void getInputFromConsole() {
 //    outputWriter.write("Please enter a barcode: ");
     String price = null;
 
@@ -34,7 +34,6 @@ public class BarcodeScanner {
     }
     while (true);
 
-    return price;
   }
 
   private String scanBarcode(String barcode) {

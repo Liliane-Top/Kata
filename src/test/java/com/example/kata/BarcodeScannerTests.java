@@ -32,7 +32,7 @@ class BarcodeScannerTests {
   void call_scanBarcode_with_valid_input(String[] input, String output) {
     var barcodeScanner = new BarcodeScanner(reader, writer);
     when(reader.read()).thenReturn(input[0], Arrays.stream(input).skip(1).toList().toArray(new String[0]));
-    Assertions.assertEquals(output, barcodeScanner.run());
+    barcodeScanner.run();
     verify(writer).write(output);
   }
 
