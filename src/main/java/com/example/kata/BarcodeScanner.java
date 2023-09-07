@@ -2,6 +2,7 @@ package com.example.kata;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -14,12 +15,6 @@ public class BarcodeScanner {
   private static List<String> prices = new ArrayList<>();
 
   public void run() {
-    getInput();
-  }
-
-  private void getInput() {
-    String price = null;
-
     do {
       String input = reader.read();
       if (input.equals("stop")) {
@@ -28,6 +23,7 @@ public class BarcodeScanner {
       writer.write(scanBarcode(input));
     } while (true);
   }
+
 
   private String scanBarcode(String barcode) {
 
@@ -39,14 +35,12 @@ public class BarcodeScanner {
       return getTotal();
     }
 
-    String price = table.getPrice(barcode);
-
-    if (price == null) {
-      return "barcode not found";
-    }
-
-    return price;
-
+    return Optional.ofNullable(table.getPrice(barcode))
+        .map(price -> {
+          prices.add(price);
+         return "The price is $" + price;
+        })
+        .orElse("barcode not found");
 
   }
 
