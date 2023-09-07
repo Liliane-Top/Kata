@@ -2,55 +2,54 @@ package com.example.kata;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class BarcodeScanner {
 
-  private static final List<String> prices = new ArrayList<>();
+  private final InputReader reader;
+  private final OutputWriter writer;
+  private final BarcodeTable table;
 
-  public static String getPrice(String... input) {
-    return getInputFromConsole();
+  private static List<String> prices = new ArrayList<>();
+
+  public void run() {
+    getInput();
   }
 
-  private static String getInputFromConsole() {
-    Scanner in = new Scanner(System.in);
-    System.out.println("Please enter a barcode: ");
+  private void getInput() {
     String price = null;
 
     do {
-      String input = in.nextLine();
+      String input = reader.read();
       if (input.equals("stop")) {
         break;
       }
-      System.out.println("You entered the following: " + input);
-      price = scanBarcode(input);
-      System.out.println(price + "\n");
-      System.out.println("Please enter a barcode: ");
-    }
-    while (in.hasNextLine());
+      writer.write(scanBarcode(input));
+    } while (true);
+  }
 
-    in.close();
+  private String scanBarcode(String barcode) {
+
+    if (barcode.isEmpty()) {
+      return "empty barcode";
+    }
+
+    if (barcode.equals("total")) {
+      return getTotal();
+    }
+
+    String price = table.getPrice(barcode);
+
+    if (price == null) {
+      return "barcode not found";
+    }
 
     return price;
+
+
   }
 
-  private static String scanBarcode(String barcode) {
-
-    return switch (barcode) {
-      case "12345" -> {
-        prices.add("7.25");
-        yield "The price is $7.25";
-      }
-      case "23456" -> {
-        prices.add("12.50");
-        yield "The price is $12.50";
-      }
-      case "99999" -> "barcode not found";
-      case "" -> "empty barcode";
-      case "total" -> getTotal();
-      default -> "unknown";
-    };
-  }
 
   private static String getTotal() {
     double total = 0.0;
