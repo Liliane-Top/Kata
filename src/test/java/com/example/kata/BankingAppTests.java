@@ -27,26 +27,16 @@ class BankingAppTests {
     account = new Account(0);
   }
 
-//  @ParameterizedTest
-//  @MethodSource("happyFlow")
-//  void bankingApp_happyFlow(Integer amount, Integer balance) {
-//
-//    assertTrue(account.getBalance().equals(balance));
-//
-//
-//  }
-//
-//  static Stream<Arguments> happyFlow() {
-//    return Stream.of(
-//        Arguments.of(500, 500),
-//        Arguments.of()
-//    );
-//  }
-
   @Test
   void call_deposit_check_balance(){
     account.deposit(500);
-    assertTrue(account.getBalance().equals(500));
+    assertEquals(500, account.getBalance());
+  }
+
+  @Test
+  void call__withdraw_check_balance(){
+    account.withdraw(100);
+    assertEquals(400, account.getBalance());
   }
 
 
