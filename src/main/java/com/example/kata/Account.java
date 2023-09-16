@@ -3,18 +3,20 @@ package com.example.kata;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Getter;
 
-@Getter
+
 public class Account {
 
   private Integer balance;
+
+  private StatementWriter writer;
   private List<AccountStatement> overviewStatements;
 
 
-  public Account(Integer balance) {
-    this.balance = balance;
-    overviewStatements = new ArrayList<>();
+  public Account(StatementWriter writer) {
+    this.balance = 0;
+    this.writer = writer;
+    this.overviewStatements = new ArrayList<>();
   }
 
   public void deposit(int amount) {
@@ -29,10 +31,11 @@ public class Account {
   }
 
   public void printStatement() {
-    for (AccountStatement statement: overviewStatements) {
+    for (AccountStatement statement : overviewStatements) {
+      writer.write(statement);
       System.out.println(statement);
-
     }
+
   }
 
 }

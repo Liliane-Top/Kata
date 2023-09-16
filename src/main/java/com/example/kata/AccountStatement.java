@@ -2,23 +2,13 @@ package com.example.kata;
 
 
 import java.time.LocalDate;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
-public class AccountStatement {
-
-  private final LocalDate date;
-  private final Integer amount;
-  private final Integer balance;
+public record AccountStatement(LocalDate date, Integer amount, Integer balance) {
 
 
-
+  //FIXME: check how to format with proper spacing
   @Override
   public String toString() {
-    return "AccountStatement{" +
-        "date=" + date +
-        ", amount=" + amount +
-        ", balance=" + balance +
-        '}';
+    return String.format(" Date       | Amount | Balance\n %s | %d    | %d", date, amount, balance);
   }
 }
