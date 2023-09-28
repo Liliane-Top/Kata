@@ -3,6 +3,7 @@ package com.example.kata;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.time.LocalDate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,9 +36,16 @@ class BankingAppTests {
     account.deposit(500);
     account.printStatement();
     verify(writer).write(statement.capture());
+    String balanceStatement = """
+        Date       | Amount | Balance
+        2023-09-21 |    500 |     500""";
 
     AccountStatement result = statement.getValue();
+
     Assertions.assertEquals(500, result.balance());
+    Assertions.assertEquals(500, result.amount());
+    Assertions.assertEquals(LocalDate.now(), result.date());
+    Assertions.assertEquals(balanceStatement, result.toString());
 
   }
 
