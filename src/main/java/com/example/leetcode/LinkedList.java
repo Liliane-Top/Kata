@@ -136,7 +136,7 @@ public class LinkedList {
     return false;
   }
 
-  public Node findKthFromEnd(int k){
+  public Node findKthFromEndMySolution(int k){
     Node findLength = head;
     Node result = head;
 
@@ -155,6 +155,27 @@ public class LinkedList {
       steps ++;
     }
     return result;
+  }
+  public Node findKthFromEnd(int k){
+    if(k <= 0){
+      return null;
+    }
+    Node slow = head;
+    Node fast = head;
+
+    for(int i = 0; i < k; i++){
+      if(fast == null) {
+        return null;
+      }
+      fast = fast.next;
+    }
+
+    while(fast != null) {
+      fast = fast.next;
+      slow = slow.next;
+    }
+
+    return slow;
   }
 }
 
