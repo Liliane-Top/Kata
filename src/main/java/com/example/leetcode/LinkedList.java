@@ -70,11 +70,10 @@ public class LinkedList {
     Node newNode = new Node(value);
     if (length == 0) {
       head = newNode;
-      tail = newNode;
     } else {
       tail.next = newNode;
-      tail = newNode;
     }
+    tail = newNode;
     length++;
   }
 
@@ -123,6 +122,20 @@ public class LinkedList {
       }
     }
     return false;
+  }
+
+  public Node findKthFromEnd(int k){
+    if (k > length) {
+      return null;
+    }
+    Node result;
+    result = head;
+    int steps = k - length;
+    while(steps != 0){
+      result = result.next;
+      steps++;
+    }
+    return result;
   }
 }
 
