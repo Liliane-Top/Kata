@@ -2,7 +2,6 @@ package com.example.leetcodeTests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.example.leetcode.LinkedList;
@@ -67,7 +66,7 @@ class LinkedListTests {
 
   }
 
-  static  Stream<Arguments> happyFlow() {
+  static Stream<Arguments> happyFlow() {
     return Stream.of(
         Arguments.of(2, 4),
         Arguments.of(5, 1),
@@ -86,10 +85,14 @@ class LinkedListTests {
     myList.append(5);
 
     assertEquals(output, myList.findKthFromEnd(k));
+    LinkedList myList2 = new LinkedList(1);
+    myList2.removeFirst();
+    assertEquals(output, myList.findKthFromEnd(k));
+
 
   }
 
-  static  Stream<Arguments> unhappyFlow() {
+  static Stream<Arguments> unhappyFlow() {
     return Stream.of(
         Arguments.of(6, null),
         Arguments.of(0, null)

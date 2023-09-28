@@ -77,6 +77,18 @@ public class LinkedList {
     length++;
   }
 
+  public Node removeFirst() {
+    if (length == 0) return null;
+    Node temp = head;
+    head = head.next;
+    temp.next = null;
+    length--;
+    if (length == 0) {
+      tail = null;
+    }
+    return temp;
+  }
+
   public Node findMiddleNode() {
     if (head == null) {
       return null;
@@ -125,15 +137,22 @@ public class LinkedList {
   }
 
   public Node findKthFromEnd(int k){
-    if (k > length) {
+    Node findLength = head;
+    Node result = head;
+
+    int length = 1;
+    while(findLength != null && findLength.next != null){
+      findLength = findLength.next;
+      length++;
+    }
+    int steps = k - length;
+    if(k > length) {
       return null;
     }
-    Node result;
-    result = head;
-    int steps = k - length;
-    while(steps != 0){
+
+    while(steps != 0) {
       result = result.next;
-      steps++;
+      steps ++;
     }
     return result;
   }
