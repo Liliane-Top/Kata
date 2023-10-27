@@ -78,7 +78,9 @@ public class LinkedList {
   }
 
   public Node removeFirst() {
-    if (length == 0) return null;
+    if (length == 0) {
+      return null;
+    }
     Node temp = head;
     head = head.next;
     temp.next = null;
@@ -136,47 +138,93 @@ public class LinkedList {
     return false;
   }
 
-  public Node findKthFromEndMySolution(int k){
+  public Node findKthFromEndMySolution(int k) {
     Node findLength = head;
     Node result = head;
 
     int length = 1;
-    while(findLength != null && findLength.next != null){
+    while (findLength != null && findLength.next != null) {
       findLength = findLength.next;
       length++;
     }
     int steps = k - length;
-    if(k > length) {
+    if (k > length) {
       return null;
     }
 
-    while(steps != 0) {
+    while (steps != 0) {
       result = result.next;
-      steps ++;
+      steps++;
     }
     return result;
   }
-  public Node findKthFromEnd(int k){
-    if(k <= 0){
+
+  public Node findKthFromEnd(int k) {
+    if (k <= 0) {
       return null;
     }
     Node slow = head;
     Node fast = head;
 
-    for(int i = 0; i < k; i++){
-      if(fast == null) {
+    for (int i = 0; i < k; i++) {
+      if (fast == null) {
         return null;
       }
       fast = fast.next;
     }
 
-    while(fast != null) {
+    while (fast != null) {
       fast = fast.next;
       slow = slow.next;
     }
 
     return slow;
   }
+
+  public void partitionList(int x) {
+
+    if (head == null) {
+      return;
+    }
+
+    Node fast = head;
+    Node slow = head;
+
+    while(fast.next != null) {
+      if(fast.value < x) {
+        if (fast.next.value >= x) {
+          slow.next = fast.next;
+        } fast = fast.next;
+      } else {// > x
+        if(fast.next.value < x ) {
+          fast.next = fast;
+          slow = fast;
+        } else {
+          fast = fast.next;
+        }
+      }
+    }
+
+    while (fast.next != null) {
+      if (fast.value < x & fast.next.value >= x) {
+        slow.next = fast.next;
+      }
+      fast = fast.next;
+    }
+
+    while (fast.next != null) {
+      if (fast.next.value >= x) {
+        fast = fast.next;
+      } else {
+        Node temp = fast.next;
+        fast.next = fast.next.next;
+        temp.next = slow.next;
+        slow.next = temp;
+        slow = slow.next;
+      }
+    }
+  }
 }
+
 
 

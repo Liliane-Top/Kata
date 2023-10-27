@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.example.leetcode.LinkedList;
 import com.example.leetcode.LinkedList.Node;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -99,5 +100,75 @@ class LinkedListTests {
     );
 
   }
+
+  @Test
+  void call_partitionList() {
+//    LinkedList myList = new LinkedList(3);
+//    myList.append(8);
+//    myList.append(5);
+//    myList.append(10);
+//    myList.append(2);
+//    myList.append(1);
+//
+//    myList.partitionList(5);
+//
+//    Assertions.assertEquals(3, myList.getHead().value);
+//    Assertions.assertEquals(2, myList.getHead().next.value);
+//    Assertions.assertEquals(1, myList.getHead().next.next.value);
+//    Assertions.assertEquals(8, myList.getHead().next.next.next.value);
+//    Assertions.assertEquals(5, myList.getHead().next.next.next.next.value);
+//    Assertions.assertEquals(10, myList.getHead().next.next.next.next.next.value);
+//
+//    LinkedList list = new LinkedList(1);
+//    list.append(4);
+//    list.append(3);
+//    list.append(2);
+//    list.append(5);
+//    list.append(2);
+//
+//    list.partitionList(3);
+//    Assertions.assertEquals(1, list.getHead().value);
+//    Assertions.assertEquals(2, list.getHead().next.value);
+//    Assertions.assertEquals(2, list.getHead().next.next.value);
+//    Assertions.assertEquals(4, list.getHead().next.next.next.value);
+//    Assertions.assertEquals(3, list.getHead().next.next.next.next.value);
+//    Assertions.assertEquals(5, list.getHead().next.next.next.next.next.value);
+
+
+    LinkedList list2 = new LinkedList(1);
+    list2.append(4);
+    list2.append(3);
+    list2.append(2);
+    list2.append(5);
+    list2.append(2);
+    list2.partitionList(6);
+
+    Assertions.assertEquals(1, list2.getHead().value);
+    Assertions.assertEquals(4, list2.getHead().next.value);
+    Assertions.assertEquals(3, list2.getHead().next.next.value);
+    Assertions.assertEquals(2, list2.getHead().next.next.next.value);
+    Assertions.assertEquals(5, list2.getHead().next.next.next.next.value);
+    Assertions.assertEquals(2, list2.getHead().next.next.next.next.next.value);
+
+    LinkedList list3 = new LinkedList(8);
+    list3.append(4);
+    list3.append(9);
+    list3.append(3);
+    list3.append(10);
+    list3.append(2);
+    list3.partitionList(5);
+
+
+
+    Assertions.assertEquals(4, list3.getHead().value);
+    Assertions.assertEquals(3, list3.getHead().next.value);
+    Assertions.assertEquals(2, list3.getHead().next.next.value);
+    Assertions.assertEquals(8, list3.getHead().next.next.next.value);
+    Assertions.assertEquals(9, list3.getHead().next.next.next.next.value);
+    Assertions.assertEquals(10, list3.getHead().next.next.next.next.next.value);
+
+  }
+
+
 
 }
